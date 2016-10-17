@@ -1,9 +1,11 @@
 Toontown Rewritten Tools
 =======
-<img src="http://i.imgur.com/HpzGcPy.png" alt="TTRT Icon"/>
 TTR-Tools is a Toontown Rewritten AutoHotKey helper. Currently has Anti-AFK and Toonfest Trampoline bot that maxes every time and can repeat hands-free (~6500 tokens/hr)
 [Download the latest release.](https://github.com/thezoid/TTR-Tools/releases)
-<p align="center"> <img src="http://i.imgur.com/RC0feE1.png" alt="TTR Tools Snapshot"/> </p>
+<p align="center"><img src="http://i.imgur.com/HpzGcPy.png" alt="TTRT Icon"/>  <img src="http://i.imgur.com/RC0feE1.png" alt="TTR Tools Snapshot"/></p>
+<p align="center">
+<p align="center"><a href="https://www.youtube.com/watch?v=nyd5mGpnBXA">Watch Overview Video</a></p><p align="center"><a href="https://www.youtube.com/watch?v=nyd5mGpnBXA"><img src="https://img.youtube.com/vi/nyd5mGpnBXA/0.jpg" alt="TTR-Tools Overview Video"/></a></p>
+</p>
 
 Features
 -------
