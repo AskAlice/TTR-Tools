@@ -7,6 +7,8 @@ TTR-Tools is a Toontown Rewritten AutoHotKey helper. Currently has Anti-AFK and 
 <p align="center"><a href="https://www.youtube.com/watch?v=nyd5mGpnBXA">Watch Overview Video</a></p><p align="center"><a href="https://www.youtube.com/watch?v=nyd5mGpnBXA"><img src="https://img.youtube.com/vi/nyd5mGpnBXA/0.jpg" alt="TTR-Tools Overview Video"/></a></p>
 </p>
 
+[Official Facebook Page](https://www.facebook.com/ttrtools/)
+
 Features
 -------
  - **Anti-AFK:** Enable/disable by CTRL+ALT+SHIFT+1. The Anti AFK will run even when TTR isn't focused. So you can continue to use your computer. As the AFK is on, the lower graph will show you how often it is ticking the Anti AFK. Every 6 seconds the graph will update, and when the AFK ticks it will spike up for one plot. The Anti-AFK can not be enabled while the trampoline is on. Use the 'Repeat' option to leave the bot on (more info below).

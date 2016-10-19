@@ -1,3 +1,16 @@
+;Modified for this project to include this function
+RGB_Euclidian_Distance( c1, c2 ) ; find the distance between 2 colors
+{ ; function by [VxE], return value range = [0, 441.67295593006372]
+; that just means that any two colors will have a distance less than 442
+   r1 := c1 >> 16
+   g1 := c1 >> 8 & 255
+   b1 := c1 & 255
+   r2 := c2 >> 16
+   g2 := c2 >> 8 & 255
+   b2 := c2 & 255
+   return Sqrt( (r1-r2)**2 + (g1-g2)**2 + (b1-b2)**2 )
+}
+
 /*
      __    __  __          __ __       __    __                 _       __                   
     / /_  / /_/ /_____  _ / // /____ _/ /_  / /________________(_)___  / /_ ____  _______
