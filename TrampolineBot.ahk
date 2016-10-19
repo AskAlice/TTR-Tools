@@ -1,4 +1,3 @@
-;Must be compiled in TTR-Tools, Can't run standalone
 #Include XGraph.ahk
 enableFeatureTrampoline = true
 #Include Gui.ahk
