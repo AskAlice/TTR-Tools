@@ -2,7 +2,7 @@ Toontown Rewritten Tools
 =======
 TTR-Tools is a Toontown Rewritten AutoHotKey helper. Currently has Anti-AFK and Toonfest Trampoline bot that maxes every time and can repeat hands-free (~3200 tokens/hr)
 [Download the latest release.](https://github.com/thezoid/TTR-Tools/releases)
-<p align="center"><img src="http://i.imgur.com/HpzGcPy.png" alt="TTRT Icon"/>  <img src="http://i.imgur.com/RC0feE1.png" alt="TTR Tools Snapshot"/></p>
+<p align="center"><img src="http://i.imgur.com/HpzGcPy.png" alt="TTRT Icon"/>  <img src="https://i.imgur.com/B0wyZoV.png" alt="TTR Tools Snapshot"/></p>
 <p align="center">
 <p align="center"><a href="https://www.youtube.com/watch?v=nyd5mGpnBXA">Watch Overview Video</a></p><p align="center"><a href="https://www.youtube.com/watch?v=nyd5mGpnBXA"><img src="https://img.youtube.com/vi/nyd5mGpnBXA/0.jpg" alt="TTR-Tools Overview Video"/></a></p>
 </p>
@@ -16,12 +16,10 @@ Features
 
 	 - AFK Time (mins): You can also set the minutes between each Anti-AFK tick. (ie: 2 mins never sleeping) The toon will log out after 12 minutes (2 mins to sleep, 10 mins to log out once sleeping) so the max AFK tick time is 11 minutes. 
 
- - **Trampoline Bot:** Enable by CTRL+ALT+SHIFT+2, Disable by CTRL+ALT+SHIFT+3. This is really the main feature of the program so far. I had a prototype working in a few hours, but kept developing the bot to be shiny because it's fun. It will graph the jump strength as the bot jumps on the trampoline. Make sure you keep TTR focused (don't tab out) while this bot is running or it won't find the pixels needed (limitation of AutoHotKey).
+ - **Trampoline Bot:** Enable by CTRL+ALT+SHIFT+2, Disable by CTRL+ALT+SHIFT+3. This is really the main feature of the program so far. I had a prototype working in a few hours, but kept developing the bot to be shiny because it's fun. It will graph the duration of each jump, to see how smoothly the bot is running. Make sure you keep TTR focused (don't tab out) while this bot is running or it won't find the pixels needed (limitation of AutoHotKey).
 	 - **Settings:**
 
-	 - Repeat: This will let you leave the bot open and walk away as the bot racks up roughly 6500 tokens per hour. It will click away the window that pops up at the end of the trampoline game, walk backwards into the trampoline, then attempt to click the play button (given ping allows, if not then no big deal just wait for it to count down).
-
-	 - Lagfix (>40): If the 'lag' variable shown above the graph during each jump is more often than not above 40, use this as lag above 40 will make the jumps too late. When the bot is working fine lag is usually around 31, but if for some reason the system is taking longer than usual to search, this option will get rid of some methods that search pixels each time a jump is made to a) see the variation in the color (integrity) and b) verify that the bot is in the trampoline game by looking for the purple pixels at the bottom of the jump bar. This prevents unwanted jumps when bot is enabled but not in trampoline. Stop the bot when walking around to mitigate this. It is recommended that you don't use lagfix if possible. To improve your performance (lower the lag number) close other 3d applications, applications of high impact (ie: chrome), and make sure only one TTR-Tools application is running (check taskbar).
+	 - Repeat Trampoline: This will let you leave the bot open and walk away as the bot racks up roughly 3200 tokens per hour. It will click away the window that pops up at the end of the trampoline game, walk backwards into the trampoline, then attempt to click the play button (given ping allows, if not then no big deal just wait for it to count down).
 
 Upcoming features
 -------
@@ -33,7 +31,7 @@ If you are having issues getting this working well or would like to report any i
 
 Compiling
 -------
-Requires AutoHotKey, pandoc to convert readme.md to html (see line 31 of TTR-Tools.ahk). To compile with the icon, use the "Convert .ahk to .exe" utility in the AutoHotKey installation. For debugging I like to use [SciTE4AutoHotkey](http://fincs.ahk4.net/scite4ahk/)
+Requires AutoHotKey, pandoc to convert readme.md to html (see line 11 of Gui.ahk). To compile with the icon, use the "Convert .ahk to .exe" utility in the AutoHotKey installation. For debugging I like to use [SciTE4AutoHotkey](http://fincs.ahk4.net/scite4ahk/)
 
 Disclaimer
 -------

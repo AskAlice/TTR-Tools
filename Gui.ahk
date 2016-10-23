@@ -17,9 +17,11 @@ FileInstall, README.html, %A_AppData%\TTR-Tools\README.html,1
 Gui +AlwaysOnTop
 Gui -DPIScale
 Gui, Margin, 0, 0
-Gui, Add, Text,h12 y5, Welcome to TTR Tools v1.0.1
+Gui, font, s8
+Gui, Add, Text,h12 y5, Welcome to TTR Tools v1.0.2
 Gui, font, s7
 Gui, Add, Button, x+5 y0 ghelp, View Help
+Gui, font, s8
 if(enableFeatureAFK || enableFeatureTrampoline)
 {
 	Gui, Add, Text, h15 x0, CTRL+ALT+SHIFT+
@@ -28,11 +30,12 @@ if(enableFeatureAFK || enableFeatureTrampoline)
 	if(enableFeatureTrampoline)
 		Gui, Add, Text, vtxt3 h15 x+0, (2-Trampoline) 
 }
-Gui, font,bold
-Gui, font, 
 	if(enableFeatureAFK || enableFeatureTrampoline)
 	{
+		Gui, font,bold
 		Gui, Add, Text, x0 vstatusLabel, Status:
+		Gui, font
+		Gui, font, s8
 			if(enableFeatureAFK)
 				Gui, Add, Text,x+3 vstatus, AntiAFK %toggle%
 			if(enableFeatureTrampoline)
@@ -40,11 +43,14 @@ Gui, font,
 	}
 	if(enableFeatureAFK || enableFeatureTrampoline)
 {
+	Gui, font,bold
 	Gui, Add, Text, x0 vopts, Opts:
+	Gui, font
+	Gui, font, s8
 		if(enableFeatureTrampoline)
 		{
-			Gui, Add, checkbox,x+3 vspeedy gSave, Lagfix (>40)
-			Gui, Add, checkbox,x+3 vrepeat Checked gSave, Repeat
+			;Gui, Add, checkbox,x+3 vspeedy gSave, Lagfix (>40)
+			Gui, Add, checkbox,x+3 vrepeat Checked gSave, Repeat Trampoline
 		}
 		if(enableFeatureAFK)
 			{
@@ -59,10 +65,10 @@ if(enableFeatureAFK || enableFeatureTrampoline)
 	if(enableFeatureTrampoline)
 	{
 		Gui, Add, Text, x0 w300 h310 hwndhGraph vGraph
-		pGraph := XGraph( hGraph, 0x55daba, 5, "0,5,0,5", 0x649e90,5 )
+		pGraph := XGraph( hGraph, 0x55daba, 5, "0,0,0,0", 0x649e90,5 )
 	}
 	Gui, Add, Text, x0 w300 h40 hwndvGraphv vvGraph
-	vGraph := XGraph( vGraphv, 0x688443, 5, "5,5,5,5", 0x649e90,1 )
+	vGraph := XGraph( vGraphv, 0x688443, 5, "0,0,0,0", 0x649e90,1 )
 }
 	Gui, Show,, TTR Tools
 ;if AFK label is created in current file (ie: if included in TTR-Tools)
@@ -126,6 +132,9 @@ setStatus:
 return
 
 ;Debug information
+^!+Ins::
+	MouseMove, 726, 593
+	return
 ^!+Home::
 ListVars
 return

@@ -1,7 +1,7 @@
 <h1 id="toontown-rewritten-tools">Toontown Rewritten Tools</h1>
 TTR-Tools is a Toontown Rewritten AutoHotKey helper. Currently has Anti-AFK and Toonfest Trampoline bot that maxes every time and can repeat hands-free (~3200 tokens/hr) <a href="https://github.com/thezoid/TTR-Tools/releases">Download the latest release.</a>
 <p align="center">
-<img src="http://i.imgur.com/HpzGcPy.png" alt="TTRT Icon"/> <img src="http://i.imgur.com/RC0feE1.png" alt="TTR Tools Snapshot"/>
+<img src="http://i.imgur.com/HpzGcPy.png" alt="TTRT Icon"/> <img src="https://i.imgur.com/B0wyZoV.png" alt="TTR Tools Snapshot"/>
 </p>
 <p align="center">
 <p align="center">
@@ -19,11 +19,10 @@ TTR-Tools is a Toontown Rewritten AutoHotKey helper. Currently has Anti-AFK and 
 <li><p><strong>Settings:</strong></p></li>
 <li><p>AFK Time (mins): You can also set the minutes between each Anti-AFK tick. (ie: 2 mins never sleeping) The toon will log out after 12 minutes (2 mins to sleep, 10 mins to log out once sleeping) so the max AFK tick time is 11 minutes.</p></li>
 </ul></li>
-<li><strong>Trampoline Bot:</strong> Enable by CTRL+ALT+SHIFT+2, Disable by CTRL+ALT+SHIFT+3. This is really the main feature of the program so far. I had a prototype working in a few hours, but kept developing the bot to be shiny because it's fun. It will graph the jump strength as the bot jumps on the trampoline. Make sure you keep TTR focused (don't tab out) while this bot is running or it won't find the pixels needed (limitation of AutoHotKey).
+<li><strong>Trampoline Bot:</strong> Enable by CTRL+ALT+SHIFT+2, Disable by CTRL+ALT+SHIFT+3. This is really the main feature of the program so far. I had a prototype working in a few hours, but kept developing the bot to be shiny because it's fun. It will graph the duration of each jump, to see how smoothly the bot is running. Make sure you keep TTR focused (don't tab out) while this bot is running or it won't find the pixels needed (limitation of AutoHotKey).
 <ul>
 <li><p><strong>Settings:</strong></p></li>
-<li><p>Repeat: This will let you leave the bot open and walk away as the bot racks up roughly 6500 tokens per hour. It will click away the window that pops up at the end of the trampoline game, walk backwards into the trampoline, then attempt to click the play button (given ping allows, if not then no big deal just wait for it to count down).</p></li>
-<li><p>Lagfix (&gt;40): If the 'lag' variable shown above the graph during each jump is more often than not above 40, use this as lag above 40 will make the jumps too late. When the bot is working fine lag is usually around 31, but if for some reason the system is taking longer than usual to search, this option will get rid of some methods that search pixels each time a jump is made to a) see the variation in the color (integrity) and b) verify that the bot is in the trampoline game by looking for the purple pixels at the bottom of the jump bar. This prevents unwanted jumps when bot is enabled but not in trampoline. Stop the bot when walking around to mitigate this. It is recommended that you don't use lagfix if possible. To improve your performance (lower the lag number) close other 3d applications, applications of high impact (ie: chrome), and make sure only one TTR-Tools application is running (check taskbar).</p></li>
+<li><p>Repeat Trampoline: This will let you leave the bot open and walk away as the bot racks up roughly 3200 tokens per hour. It will click away the window that pops up at the end of the trampoline game, walk backwards into the trampoline, then attempt to click the play button (given ping allows, if not then no big deal just wait for it to count down).</p></li>
 </ul></li>
 </ul>
 <h2 id="upcoming-features">Upcoming features</h2>
@@ -31,6 +30,6 @@ TTR-Tools is a Toontown Rewritten AutoHotKey helper. Currently has Anti-AFK and 
 <h2 id="bugs">Bugs</h2>
 <p>If you are having issues getting this working well or would like to report any issues please refer to the <a href="https://github.com/thezoid/TTR-Tools/issues">issue tracker on github.</a></p>
 <h2 id="compiling">Compiling</h2>
-<p>Requires AutoHotKey, pandoc to convert readme.md to html (see line 31 of TTR-Tools.ahk). To compile with the icon, use the &quot;Convert .ahk to .exe&quot; utility in the AutoHotKey installation. For debugging I like to use <a href="http://fincs.ahk4.net/scite4ahk/">SciTE4AutoHotkey</a></p>
+<p>Requires AutoHotKey, pandoc to convert readme.md to html (see line 11 of Gui.ahk). To compile with the icon, use the &quot;Convert .ahk to .exe&quot; utility in the AutoHotKey installation. For debugging I like to use <a href="http://fincs.ahk4.net/scite4ahk/">SciTE4AutoHotkey</a></p>
 <h2 id="disclaimer">Disclaimer</h2>
 <p>You may get banned for using this. Although somewhat harmless, some may consider that it gives an 'unfair advantage'. Read the <a href="https://www.toontownrewritten.com/terms">TTR Guidelines to Being Toontastically Toon Enough</a>. I bet TTR could try and detect if a tool like this is running. I've not gotten banned but if this tool becomes popular then TTR's security team will probably look into this.</p>
