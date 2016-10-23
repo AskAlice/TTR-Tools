@@ -1,6 +1,10 @@
 #Include XGraph.ahk
 enableFeatureTrampoline = true
 #Include Gui.ahk
+^!+3:: 
+looping := false
+return
+
 ^!+2:: 
 width := 816
 height := 639
@@ -16,13 +20,11 @@ if(enableFeatureAFK)
 ;OutputDebug Started
 ;GUI changes while in this bot
 GuiControl,,txt,Trampoline Bot Searching. Stop with CTRL+ALT+SHIFT+3
-GuiControl, Enable, speedy
 GuiControl, Enable, repeat
 GuiControl, Disable, timeAFK
 GuiControl, Disable, timeAFKUD
 goSub, Save
 ;Menu Tray, Icon, tramp.ico
-inMinigame := false
 
 ;Make sure the graph is shown
 XGraph_Plot(pGraph)
@@ -51,9 +53,16 @@ count :=0
 prevStrength :=0
 looped := true
 goSub, setStatus
+looping := true
+_starttime := A_TickCount 
 loop
 {
+	if(!looping)
+		break
 	count++
+	if(prevStrength == 0)
+		_starttime := A_TickCount 
+	elapsedtime := A_TickCount - _starttime
 	if (GetKeyState("Alt", "P") && GetKeyState("Shift", "P") && GetKeyState("Ctrl", "P") && GetKeyState("3", "P"))
 	{
 	TrayTip TTR Tools,"Trampoline bot stopped by hotkey", 1,32
@@ -67,11 +76,23 @@ loop
 	} 
 	;PixelSearch, Px, Py, 5, 451, 65, 459, 0xEFEFEF, 10 Fast RGB
 	;if(width != winWidth || height != winHeight)
-	if(count >=200)
+	if(elapsedtime > 4400)
 	{
-		color := 0xFFFFFF
-		variance := 3
-		highestPy := 445
+			color := 0xEFEFEF
+			variance := 12
+			highestPy := 451
+	}
+	else if(elapsedtime > 3000)
+	{
+			color := 0xEFEFEF
+			variance := 23
+			highestPy := 451
+	}
+	else if(elapsedtime > 1000)
+	{
+		color := 0xEFEFEF
+		variance := 35
+		highestPy := 451
 	}
 	else
 	{
@@ -85,41 +106,27 @@ loop
 	;PixelSearch, Px, Py, 16, lowestPy, 65, highestPy, 0xcEFEFEF, variance, Fast RGB  ; dyamic
 	if (ErrorLevel == 0)
 	{
-	_starttime := A_TickCount 
-	if(!speedy)
-	{
-	PixelGetColor, bounce, pX,Py, RGB
-	bunceD := Round(RGB_Euclidian_Distance(bounce,color))
-	PixelGetColor, purp, 25,469, RGB
-	dist := RGB_Euclidian_Distance(purp,0x8d519a)
-	if(dist >25)
-	{
-		inMinigame := false
-		GuiControl,,txt, Jump Bar not detected. Don't resize TT or tab out. Disable F.lux
-	}
-	}
-	else
-	{
-	dist = 0
-	bunceD = Simple
-	}
-		inMinigame := true
-		if(looped && count > 10 && dist < 25)
-		{
-				elapsedtime := A_TickCount - _starttime
-				GuiControl,,txt, Variance %variance%, Strength %count%, Integrity %bunceD%, lag. %elapsedtime%. foundBar %inMinigame%		
 		if(prevStrength == 0)
-			{
-				;OutputDebug %prevStrength% color %color% variance %variance% pixel %highestPy%
-				XGraph_Plot(pGraph,310-prevStrength)
-			}
-			else{
+		{
+				PixelGetColor, purp, 25,469, RGB
+				dist := RGB_Euclidian_Distance(purp,0x8d519a)
+				if(dist < 25)
+				{
+					_starttime := A_TickCount
+					prevStrength := 1
+				}
+				else
+					prevStrength:= 0
+		}
+		if(looped && count > 10 && prevStrength > 0)
+		{
+		elapsedtime := A_TickCount - _starttime
 				;OutputDebug %count% color %color% variance %variance% pixel %highestPy% distance %bunceD%, lag %elapsedtime%
-				prevStrength := count
-				XGraph_Plot(pGraph,310-count)
-			}
 			prevStrength := count
+			XGraph_Plot(pGraph,310-(elapsedtime*0.0596153846))
+			GuiControl,,txt, Variance %variance%, Strength %count%, Time %elapsedtime%
 			count := 0
+			_starttime := A_TickCount 
 			XGraph_Plot(vGraph,40-variance)
 			ControlSend,, {Ctrl},ahk_id %active_id%
 			;SendInput {Ctrl}
@@ -154,31 +161,44 @@ loop
 				dist := RGB_Euclidian_Distance(purp,0x8d519a)
 				if(dist > 25)
 				{
-					GuiControl,,txt, Jump Bar not detected. Don't resize TT or tab out. Disable Flux
-					count := 0
 					prevStrength:= 0
-					ControlClick, x400 y450,ahk_id %active_id%,,,2, NA
-					ControlSend,, {Down DOWN},ahk_id %active_id%
-					Sleep 800
-					ControlSend,, {Down UP},ahk_id %active_id%=
-					Sleep 1400
-					IfWinExist, Toontown Rewritten [BETA]
-					WinActivate
-					PixelGetColor,book,762,565 RGB
-					bDist := RGB_Euclidian_Distance(book,0xf6fa84)
-					if(bDist < 25)
-						ControlClick, x726 y593,ahk_id %active_id%,,,4, NA
-					else
+					GuiControl,,txt, Jump Bar not detected. Don't resize TT or tab out. Disable Flux
+					PixelGetColor,okbtn,400,450 RGB
+					okbDist := RGB_Euclidian_Distance(okbtn,0x50CC22)
+					if(okbDist < 30)
+					{
+						count := 0
+						prevStrength:= 0
+						MouseGetPos, mouseX, mouseY
+						if((mouseX >= 0 && mouseX <= 816) && (mouseY >= 0 && mouseY <= 639))
+							MouseMove, 400, 450
+						ControlClick, x400 y450,ahk_id %active_id%,,,2, NA
+						ControlSend,, {Down DOWN},ahk_id %active_id%
+						Sleep 800
+						ControlSend,, {Down UP},ahk_id %active_id%=
 						Sleep 1400
-						ControlClick, x726 y593,ahk_id %active_id%,,,4, NA
-				}
-				else{
-							IfWinExist, Toontown Rewritten [BETA]
+						IfWinExist, Toontown Rewritten [BETA]
+						WinActivate
+						PixelGetColor,playbtn,726,593 RGB
+						bDist := RGB_Euclidian_Distance(playbtn,0x00b714)
+						if(bDist < 35)
+						{
+							MouseGetPos, mouseX, mouseY
+							if((mouseX >= 0 && mouseX <= 816) && (mouseY >= 0 && mouseY <= 639))
+							MouseMove, 726, 593
+							ControlClick, x726 y593,ahk_id %active_id%,,,4, NA
+						}
+						else
+						{
+							Sleep 1000
+							PixelGetColor,playbtn,726,593 RGB
+							bDist := RGB_Euclidian_Distance(playbtn,0x00b714)
+							if(bDist < 35)
 							{
-								WinGetPos,winX,winY,curWidth,curHeight
-								if(curWidth != width || curHeight != height)
-									WinMove, Toontown Rewritten [BETA], , ,  , width, height
+								ControlClick, x726 y593,ahk_id %active_id%,,,4, NA
 							}
+						}
+					}
 				}
 			}
 		}

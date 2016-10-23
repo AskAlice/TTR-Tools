@@ -35,7 +35,7 @@ else
 	Gosub, setStatus
 	TrayTip TTR Tools, "Anti AFK Stopped", 1
 	vGraph := XGraph_Detach(vGraph) 
-	vGraph := XGraph( vGraphv, 0x688443, 5, "0,5,0,5", 0x649e90,1 )
+	vGraph := XGraph( vGraphv, 0x688443, 5, "0,0,0,0", 0x649e90,1 )
 	SetTimer plotAFK, off
 	GuiControl, Enable, speedy
 	GuiControl, Enable, repeat
