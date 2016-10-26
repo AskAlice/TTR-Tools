@@ -22,7 +22,7 @@ parsed := JSON.load(download)
 liveVer := parsed.tag_name
 downloadURL := "https://github.com/thezoid/TTR-Tools/releases/latest"
 liveVersionInt := formatVersion(liveVer)
-if(iniUpdate == "true")
+if(iniUpdate != 0)
 {
 	if(versionInt < liveVersionInt)
 	{
@@ -36,7 +36,7 @@ if(iniUpdate == "true")
 			MsgBox, 4, Update Found, Okay, TTR-Tools will not update. Remember this change?
 				IfMsgBox Yes
 			{
-				IniWrite, false, %ini%, TTR-Tools, CheckUpdate
+				IniWrite, 0, %ini%, TTR-Tools, CheckUpdate
 				MsgBox, 0, TTR-Tools, Won't check for updates again. Download new version manually to re-enable, or go into config file at %ini%.
 			}
 		}
@@ -45,3 +45,6 @@ if(iniUpdate == "true")
 if(iniVersionInt < versionInt){
 FileInstall, default-conf.ini, %A_AppData%\TTR-Tools\config.ini,1
 }
+;debug
+;ListVars
+;pause

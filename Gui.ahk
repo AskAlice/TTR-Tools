@@ -22,6 +22,7 @@ Gui, font, s8
 Gui, Add, Text,h12 y5, Welcome to TTR Tools %version%
 Gui, font, s7
 Gui, Add, Button, x+5 y0 ghelp, View Help
+Gui, Add, Button, x+5 y0 gopenConfig, View Config
 Gui, font, s8
 if(enableFeatureAFK || enableFeatureTrampoline)
 {
@@ -105,6 +106,10 @@ Help::
 	page.write(htmlpage)
 	Gui, help:Show, , TTR Tools Help
 	ComObjConnect(page, "IE_")
+return
+
+openConfig:
+Run, %ini%
 return
 Save:	
 	Gui, Submit, NoHide
