@@ -1,4 +1,5 @@
 #Include XGraph.ahk
+#Include config.ahk
 toggle :=false
 trampRunning :=false
 if A_IsCompiled
@@ -18,7 +19,7 @@ Gui +AlwaysOnTop
 Gui -DPIScale
 Gui, Margin, 0, 0
 Gui, font, s8
-Gui, Add, Text,h12 y5, Welcome to TTR Tools v1.0.2
+Gui, Add, Text,h12 y5, Welcome to TTR Tools %version%
 Gui, font, s7
 Gui, Add, Button, x+5 y0 ghelp, View Help
 Gui, font, s8
@@ -50,13 +51,18 @@ if(enableFeatureAFK || enableFeatureTrampoline)
 		if(enableFeatureTrampoline)
 		{
 			;Gui, Add, checkbox,x+3 vspeedy gSave, Lagfix (>40)
-			Gui, Add, checkbox,x+3 vrepeat Checked gSave, Repeat Trampoline
+			if(iniRep == 1)
+				Gui, Add, checkbox,x+3 vrepeat Checked gSave, Repeat Trampoline
+			else if(iniRep== 0)
+				Gui, Add, checkbox,x+3 vrepeat gSave, Repeat Trampoline
+			else
+				Gui, Add, checkbox,x+3 vrepeat Checked gSave, Repeat Trampoline
 		}
 		if(enableFeatureAFK)
 			{
 				Gui, Add, Text, x+0 vtextAFK,| AFK Time (mins):
-				Gui, Add, Edit, h16 x+3 vtimeAFK gSave number, 8
-				Gui, Add, UpDown, vtimeAFKUD Range1-11, 8
+				Gui, Add, Edit, h16 x+3 vtimeAFK gSave number, %iniAFKMins%
+				Gui, Add, UpDown, vtimeAFKUD Range1-11, %iniAFKMins%
 		}
 }
 if(enableFeatureAFK || enableFeatureTrampoline)
@@ -102,6 +108,12 @@ Help::
 return
 Save:	
 	Gui, Submit, NoHide
+	
+; config.ahk update
+IniWrite, %repeat%, %ini%,Trampoline, repeat
+IniWrite, %timeAFK%, %ini%, AFK, afkMins
+; end config.ahk update
+
 if(enableFeatureAFK)
 	{
 		if(timeAFK*60000 != timeMS)

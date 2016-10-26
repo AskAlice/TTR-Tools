@@ -1,5 +1,6 @@
 /*
-Welcome to TTR Tools v1.0.0
+Welcome to TTR Tools. 
+To check version number, look in config.ahk and default-conf.ini
 Released under the GPL
 Please be sure to follow the license
 
