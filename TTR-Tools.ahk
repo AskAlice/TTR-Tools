@@ -28,9 +28,11 @@ Process, priority, , High
 ;Enable features for GUI to recognize
 enableFeatureAFK := true
 enableFeatureTrampoline := true
+enableFeatureGarden:=true
 #include Gui.ahk
 
 
 ;Anti AFK Hotkey
 #Include Afk.ahk
 #include TrampolineBot.ahk
+#Include Garden.ahk
