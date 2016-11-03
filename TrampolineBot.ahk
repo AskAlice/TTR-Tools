@@ -1,11 +1,11 @@
 #Include XGraph.ahk
 enableFeatureTrampoline = true
 #Include Gui.ahk
-^!+3:: 
+!+3:: 
 looping := false
 return
 
-^!+2:: 
+!+2:: 
 width := 816
 height := 639
 ;Bool used for GUI
@@ -19,7 +19,7 @@ if(enableFeatureAFK)
 	}
 ;OutputDebug Started
 ;GUI changes while in this bot
-GuiControl,,txt,Trampoline Bot Searching. Stop with CTRL+ALT+SHIFT+3
+GuiControl,,txt,Trampoline Bot Searching. Stop with ALT+SHIFT+3
 GuiControl, Enable, repeat
 GuiControl, Disable, timeAFK
 GuiControl, Disable, timeAFKUD
@@ -63,7 +63,7 @@ loop
 	if(prevStrength == 0)
 		_starttime := A_TickCount 
 	elapsedtime := A_TickCount - _starttime
-	if (GetKeyState("Alt", "P") && GetKeyState("Shift", "P") && GetKeyState("Ctrl", "P") && GetKeyState("3", "P"))
+	if (GetKeyState("Alt", "P") && GetKeyState("Shift", "P") && GetKeyState("3", "P"))
 	{
 	TrayTip TTR Tools,"Trampoline bot stopped by hotkey", 1,32
 	trampRunning := false
@@ -175,7 +175,7 @@ loop
 						ControlClick, x400 y450,ahk_id %active_id%,,,2, NA
 						ControlSend,, {Down DOWN},ahk_id %active_id%
 						Sleep 800
-						ControlSend,, {Down UP},ahk_id %active_id%=
+						ControlSend,, {Down UP},ahk_id %active_id%
 						Sleep 1400
 						IfWinExist, Toontown Rewritten [BETA]
 						WinActivate
