@@ -2,6 +2,7 @@
 #Include config.ahk
 toggle :=false
 trampRunning :=false
+global gardening := false
 if A_IsCompiled
 {
   Menu, Tray, Icon, %A_ScriptFullPath%, -159
@@ -24,24 +25,33 @@ Gui, font, s7
 Gui, Add, Button, x+5 y0 ghelp, View Help
 Gui, Add, Button, x+5 y0 gopenConfig, View Config
 Gui, font, s8
-if(enableFeatureAFK || enableFeatureTrampoline)
+if(enableFeatureAFK || enableFeatureTrampoline || enableFeatureGarden)
 {
-	Gui, Add, Text, h15 x0, CTRL+ALT+SHIFT+
+	if(enableFeatureGarden)
+	{
+		Gui, Add, Text, vtxt4 h15 x0, (Garden-Num 1-5),
+		Gui, Add, Text, h15 x+2, ALT+SHIFT+
+	}
+	else
+		Gui, Add, Text, h15 x0, ALT+SHIFT+
 	if(enableFeatureAFK)
 		Gui, Add, Text,vtxt2 h15 x+0, (1-AntiAFK)
 	if(enableFeatureTrampoline)
-		Gui, Add, Text, vtxt3 h15 x+0, (2-Trampoline) 
+		Gui, Add, Text, vtxt3 h15 x+0, (2/3-Trampoline) 
 }
-	if(enableFeatureAFK || enableFeatureTrampoline)
+	if(enableFeatureAFK || enableFeatureTrampoline || enableFeatureGarden)
 	{
 		Gui, font,bold
 		Gui, Add, Text, x0 vstatusLabel, Status:
 		Gui, font
 		Gui, font, s8
 			if(enableFeatureAFK)
-				Gui, Add, Text,x+3 vstatus, AntiAFK %toggle%
+				Gui, Add, Text,x+3 vstatus, AntiAFK %toggle% |
 			if(enableFeatureTrampoline)
-			Gui, Add, Text,x+3 vstatus2, Trampoline %trampRunning%
+				Gui, Add, Text,x+3 vstatus2, Trampoline %trampRunning% |
+		/*	if(enableFeatureGarden)
+				Gui, Add, Text,x+3 vstatus3, Garden %gardening% |
+				*/
 	}
 	if(enableFeatureAFK || enableFeatureTrampoline)
 {
@@ -66,9 +76,18 @@ if(enableFeatureAFK || enableFeatureTrampoline)
 				Gui, Add, UpDown, vtimeAFKUD Range1-11, %iniAFKMins%
 		}
 }
-if(enableFeatureAFK || enableFeatureTrampoline)
+if(enableFeatureAFK || enableFeatureTrampoline || enableFeatureGarden)
 {
 	Gui, Add, Text,x0 vtxt w300 h15,Trampoline bot graph will plot when running
+if(enableFeatureTrampoline)
+	GuiControl,,txt,Trampoline bot graph will plot when running
+else if(enableFeatureAFK)
+	GuiControl,,txt,Anti-AFK will plot when running
+else if(enableFeatureGarden)
+	GuiControl,,txt,Garden bot not running
+}
+if(enableFeatureAFK || enableFeatureTrampoline)
+{
 	if(enableFeatureTrampoline)
 	{
 		Gui, Add, Text, x0 w300 h310 hwndhGraph vGraph
@@ -139,13 +158,13 @@ if(enableFeatureAFK)
 	}
 return
 setStatus:
-	if(enableFeatureAFK || enableFeatureTrampoline)
-	{
 		if(enableFeatureAFK)
 			GuiControl,,status,AntiAFK %toggle%
 		if(enableFeatureTrampoline)
 			GuiControl,,status2,Trampoline %trampRunning%
-	}
+	/*	if(enableFeatureGarden)
+			GuiControl,,status3,Garden %gardening%
+			*/
 return
 
 ;Debug information

@@ -1,7 +1,7 @@
 #Include XGraph.ahk
 enableFeatureAFK= true
 #Include Gui.ahk
-^!+1:: 
+!+1:: 
 if(!trampRunning)
 	gosub, toggleAFK
 else
