@@ -72,7 +72,7 @@ if(enableFeatureAFK || enableFeatureTrampoline || enableFeatureGarden)
 		if(enableFeatureAFK)
 			{
 				Gui, Add, Text, x+0 vtextAFK,| AFK Time (mins):
-				Gui, Add, Edit, h16 x+3 vtimeAFK gSave number, %iniAFKMins%
+				Gui, Add, Edit, h16 x+3 w35 vtimeAFK gSave number, %iniAFKMins%
 				Gui, Add, UpDown, vtimeAFKUD Range1-11, %iniAFKMins%
 		}
 }
