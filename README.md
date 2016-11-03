@@ -22,7 +22,7 @@ Features
 	 - Repeat Trampoline: This will let you leave the bot open and walk away as the bot racks up roughly 3200 tokens per hour. It will click away the window that pops up at the end of the trampoline game, walk backwards into the trampoline, then attempt to click the play button (given ping allows, if not then no big deal just wait for it to count down).
 
  - **Gardening Bot:** This feature is a work in progress (initial features released in v1.0.4). Right now, you select which flower you'd like to plant (1-5) with numpad number keys (make sure caps lock is on) while standing next to an empty flower pot, and the bot will select the beans and click plant if it is sure that it has selected the right amount of beans (mostly always this works). Please help me out by reporting any bugs you see into the issue section on this github repository. See the upcoming features section below for planned updates on this. The code is somewhat there, I just need more time.
- - 
+
 Upcoming features
 -------
 - **Gardening Bot:** I do plan on making it fully automatic so you teleport to home, press a hotkey, and the bot will walk around to each flower pot, optionally watering grown plants, removing grown plants if the pot isn't empty, planting a new flower cycling from flower number 1-5 to 5-1, water the plant once, or a set number of times (ie 2 or 3 if your can is crap and want to train).
