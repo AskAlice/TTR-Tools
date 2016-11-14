@@ -2,7 +2,19 @@
 enableFeatureAFK= true
 #Include Gui.ahk
 !+1:: 
-if(!trampRunning)
+gosub, runAFK
+return
+
+startAFK(){
+	OutputDebug TEST
+gosub, runAFK
+}
+toggleAFK(){
+	OutputDebug TEST
+gosub, toggleAFK
+}
+runAFK:
+if(!trampRunning && !gardening)
 	gosub, toggleAFK
 else
 	TrayTip TTR Tools, Can't run AFK while Trampoline bot is running.
@@ -14,15 +26,12 @@ if(toggle)
 	{
 	;Initialize Anti AFK
 	Gosub, setStatus
-	GuiControl, Disable, speedy
-	GuiControl, Disable, repeat
-	GuiControl, Enable, timeAFK
-	GuiControl, Enable, timeAFKUD
 	TrayTip TTR Tools, "Anti AFK Started", 1
-	GuiControl,,txt, AFK Running. Triggers shown in spikes in lower graph
+	guiText("txt","AFK Running. Triggers shown in spikes in lower graph")
 	XGraph_Detach(vGraph) 
 	global sentLast := false
 	vGraph := XGraph( vGraphv, 0x83A654, 1, "0,5,0,5", 0xFAFAFA,2)
+	Gosub, Afk
 	Loop, 30
 	XGraph_Plot(vGraph,29)
 	plotAFKTime := Round(timeMS/300)
@@ -37,10 +46,7 @@ else
 	vGraph := XGraph_Detach(vGraph) 
 	vGraph := XGraph( vGraphv, 0x688443, 5, "0,0,0,0", 0x649e90,1 )
 	SetTimer plotAFK, off
-	GuiControl, Enable, speedy
-	GuiControl, Enable, repeat
-	GuiControl, Enable, timeAFK
-	GuiControl, Enable, timeAFKUD
+	sendJS("updateConsole('Anti AFK events will be logged here.', '#afk-console', 'clear')")
 	;Menu Tray, Icon, def.ico
 	}
 return
@@ -52,11 +58,14 @@ if(toggle)
 	if(sentLast == true)
 	{
 			XGraph_Plot(vGraph,0)
+			sendJS("plotAFK(30);")		
+			TrayTip TTR Tools, "AFK Sent", 1
 			global sentLast := false
 	}
 	else
 	{
 			XGraph_Plot(vGraph,29)
+				sendJS("plotAFK(3);")		
 	}
 }
 else
@@ -69,9 +78,16 @@ return
 
 Afk:
 ;Runs on timer. CTRL+F for settimer
+if((trampolineRunning || gardening) && toggle)
+{
+gosub, toggleAFK
+return
+}
 	WinGet active_id, ID, Toontown Rewritten [BETA]
 	if(toggle)
 	{
+			FormatTime, TimeString,, h:mm:ss
+			GuiText("txt", "Triggered Anti-AFK at " . TimeString)
 			ControlSend,,{Ctrl DOWN},ahk_id %active_id%
 			sleep 60
 			ControlSend,,{Ctrl UP},ahk_id %active_id%

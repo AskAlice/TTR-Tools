@@ -1,4 +1,10 @@
 /*
+TODO BEFORE 1.1.0 RELEASE:
+Finish the webapp
+Make sure the webapp works on compiled
+
+*/
+/*
 Welcome to TTR Tools. 
 To check version number, look in config.ahk and default-conf.ini
 Released under the GPL
@@ -23,16 +29,16 @@ if not A_IsAdmin
 }
 Process, priority, , High
 
-
-
 ;Enable features for GUI to recognize
 enableFeatureAFK := true
 enableFeatureTrampoline := true
 enableFeatureGarden:=true
-#include Gui.ahk
-
-
-;Anti AFK Hotkey
 #Include Afk.ahk
 #include TrampolineBot.ahk
 #Include Garden.ahk
+#include Gui.ahk
+F9::
+
+return
+
+;Anti AFK Hotkey

@@ -2,7 +2,9 @@ Toontown Rewritten Tools
 =======
 TTR-Tools is a Toontown Rewritten AutoHotKey helper. Currently has Anti-AFK and Toonfest Trampoline bot that maxes every time and can repeat hands-free (~3200 tokens/hr)
 [Download the latest release.](https://github.com/thezoid/TTR-Tools/releases)
-<p align="center"><img src="http://i.imgur.com/HpzGcPy.png" alt="TTRT Icon"/>  <img src="https://i.imgur.com/B0wyZoV.png" alt="TTR Tools Snapshot"/></p>
+<p align="center"><img src="http://i.imgur.com/HpzGcPy.png" alt="TTRT Icon"/> <br/><img src="http://i.imgur.com/OkXosgP.png" alt="TTR Tools Snapshot"/><br/>
+Old GUI Eventually to be phased out:<br/>
+<img src="https://i.imgur.com/YHKErJt.png" alt="Old GUI"/></p>
 <p align="center">
 <p align="center"><a href="https://www.youtube.com/watch?v=nyd5mGpnBXA">Watch Overview Video</a></p><p align="center"><a href="https://www.youtube.com/watch?v=nyd5mGpnBXA"><img src="https://img.youtube.com/vi/nyd5mGpnBXA/0.jpg" alt="TTR-Tools Overview Video"/></a></p>
 </p>
@@ -11,6 +13,10 @@ TTR-Tools is a Toontown Rewritten AutoHotKey helper. Currently has Anti-AFK and 
 
 Features
 -------
+
+**There is a new GUI powered by [joedf's Webapp.ahk](https://github.com/joedf/Webapp.ahk). It will make the bot much prettier, but it's still in beta, and there may be crashes when using it. YMMV please report any bugs in the issues section of this repo.**
+
+
  - **Anti-AFK:** Enable/disable by CTRL+ALT+SHIFT+1. The Anti AFK will run even when TTR isn't focused. So you can continue to use your computer. As the AFK is on, the lower graph will show you how often it is ticking the Anti AFK. Every 6 seconds the graph will update, and when the AFK ticks it will spike up for one plot. The Anti-AFK can not be enabled while the trampoline is on. Use the 'Repeat' option to leave the bot on (more info below).
 	 - **Settings:**
 
@@ -21,15 +27,28 @@ Features
 
 	 - Repeat Trampoline: This will let you leave the bot open and walk away as the bot racks up roughly 3200 tokens per hour. It will click away the window that pops up at the end of the trampoline game, walk backwards into the trampoline, then attempt to click the play button (given ping allows, if not then no big deal just wait for it to count down).
 
- - **Gardening Bot:** This feature is a work in progress (initial features released in v1.0.4). Right now, you select which flower you'd like to plant (1-5) with numpad number keys (make sure caps lock is on) while standing next to an empty flower pot, and the bot will select the beans and click plant if it is sure that it has selected the right amount of beans (mostly always this works). Please help me out by reporting any bugs you see into the issue section on this github repository. See the upcoming features section below for planned updates on this. The code is somewhat there, I just need more time.
+ - **Gardening Bot:** This feature is a work in progress (initial features released in v1.0.4, first full auto prototype in 1.1.0). You can press CTRL+ALT+4 to enable full auto garden prototype. Only start this at the spawn point for the estate (teleport to estate, don't move, and press the hotkey). Disable with CTRL+ALT+5, pause with PAUSE/BREAK. Alternately, you can do the movement manually and select which flower you'd like to plant (1-5) with numpad number keys (make sure caps lock is on). Using numpad will ALWAYS pick a plant if there's something already in the pot. and the bot will select the beans and click plant if it is sure that it has selected the right amount of beans (mostly always this works). Please help me out by reporting any bugs you see into the issue section on this github repository.  
+  	 - **Settings:**
+
+	 - Pick+Replant: This option, when enabled, will authenticate the bot to pick plants. There is no reliable way to tell if the plants are grown or not, so just tick this option when the flowers are grown. Otherwise, you can uncheck it and it will just water plants that are already in a pot.
+	 - Times to Water: Based on your water bucket skill, this is useful to either save time or get the most skill out of watering.
 
 Upcoming features
 -------
-- **Gardening Bot:** I do plan on making it fully automatic so you teleport to home, press a hotkey, and the bot will walk around to each flower pot, optionally watering grown plants, removing grown plants if the pot isn't empty, planting a new flower cycling from flower number 1-5 to 5-1, water the plant once, or a set number of times (ie 2 or 3 if your can is crap and want to train).
+- **Gardening Bot:** I plan on making it more reliable. 
 
+- **(Potential) Gag queue:** I had an idea for ease of use in cog battles. While waiting to pick a gag, you could tell the bot which gag you're going to pick, before the gag screen pops up. The bot would wait, select the gag and cog, and you can lay back or get some snacks or something.
+
+- **(Potential)Gag restock:** It may be possible to have a hotkey to buy all the gags you would like in a specific priority. This could automatically buy gags that you intend to hold the max amount of, I see no good way to restock to a specific number besides the max without some elaborate pixel searching which would probably prove to be fairly unreliable. But It's an idea I could work on if I ever feel like it.
 	
 Bugs
 -------
+- **Known**
+
+	- (major) - In 1.0.4 the default config was not properly set, so it will ask to update every time unless you change the version in the config.ini from 1.0.3 to 1.0.4.
+
+	- (minor) - in 1.1.0, the beta web gui sometimes throws a ton of javascript errors. Although the webapp behaves as intended, I'm unsure as to why this is happening, as it's hard to debug without a javascript console, especially since this error being picked up in the js error log console at the bottom of the page is giving some very vague information.
+
 If you are having issues getting this working well or would like to report any issues please refer to the [issue tracker on github.](https://github.com/thezoid/TTR-Tools/issues)
 
 Compiling

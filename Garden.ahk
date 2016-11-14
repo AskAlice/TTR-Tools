@@ -69,11 +69,63 @@ return currentFlower
 }
 
 ;DEBUG
-\::
-  Suspend Permit
-  Pause Toggle
+Pause::
+Suspend Permit
+global gardening
+if(gardening)
+{
+	guiText("txt", "Gardening paused with the PAUSE button")
+	Pause, Toggle, 1
+    Suspend, Toggle
+}else{
+	Pause, Off
+	Suspend, Off
+}
+return
+
   Return
-  
+/*
+Numpad7::
+	checkWindow(active_id)
+	OutputDebug, RUNNING DEBUGGER
+	Suspend Permit
+  Pause Toggle
+return
+Numpad8::
+	isRec := false
+loop{
+	isup := GetKeyState("Up", "P")
+	isdown := GetKeyState("Down", "P")
+	isleft := GetKeyState("Left", "P")
+	isright :=  GetKeyState("Right", "P")
+		if (isup || isdown || isleft || isright)
+	{
+		isRec := true
+		wuu := isup
+		wdu := isdown
+		wlu := isleft
+		wru := isright
+	elapsedtime := A_TickCount - _starttime
+	}else{
+		if(isRec){
+			OutputDebug, Time %elapsedtime% Up %wuu% Down %wdu% Left %wlu% Right %wru%
+			wuu := false
+			wdu := false
+			wlu := false
+			wru := false
+			isRec := false
+		}
+		_starttime := A_TickCount 
+	}
+	}
+return
+
+Numpad9::
+	checkWindow(active_id)
+
+		return
+		*/
+; END DEBUG
 checkWindow(byref active_id){
 width := 816
 height := 639
@@ -89,10 +141,8 @@ IfWinExist, Toontown Rewritten [BETA]
 	}
 	else{
 		TrayTip TTR Tools, "Toontown Application not open", 1, 1
-		GuiControl,,txt, Toontown not open
-		global gardening := false
-		gardening := false
-		gosub setStatus
+		guiText("txt", "Toontown not open")
+		exitGardening()
 		return false
 	}
 }
@@ -126,9 +176,18 @@ safeClick(x,y){
 		}
 		
 plant(iteration){
+	guiText("txt", "Attempting to plant flower #" . iteration)
+	if(iteration > 5 && iteration <= 10)
+		iteration := iteration - 5
+	if(iteration > 10)
+		iteration := iteration - 10
+	
+	if(iteration > 5)
+		return 5
 	if(!checkWindow(active_id))
-		return
+		return 99
 	;Looks for a pixel that is present when the bean picker is open
+	guiText("txt", "Scanning for gardening sidebar.")
 	PixelGetColor,boxOpen,400,250, RGB
 	boxOpenDist := RGB_Euclidian_Distance(boxOpen,0xFFFFBF)
 		OutputDebug Plant Box: %boxOpenDist%
@@ -136,135 +195,461 @@ plant(iteration){
 	{
 		;Bean Picker found, no need to click the shovel button
 		OutputDebug Already in window!
+		guiText("txt", "Plant window already open... moving on")
 	}else
 	{
+	;BEGIN SIDEBAR CHECKING
 		if(!checkWindow(active_id))
 		return
 	;Try and click the shovel button, but don't remove a plant if it's already ther
 	;Search for the water bucket button
 		PixelGetColor,hasGardenSidebar,70,145, RGB
 		sidebarDist := RGB_Euclidian_Distance(hasGardenSidebar,0xFFFF8F)
-		OutputDebug Sidebar: %sidebarDist%
+		;OutputDebug Sidebar: %sidebarDist%
 		if(sidebarDist < 20)
 		{
 		PixelGetColor,hasBucket,40,214, RGB
 		bucketDist := RGB_Euclidian_Distance(hasBucket,0x56C9D0)
-		OutputDebug Bucket: %bucketDist%
+		;OutputDebug Bucket: %bucketDist%
 			if(bucketDist > 20)
 			{
 			;Water bucket not found, look for shovel tool
 			PixelGetColor,hasShovel,50,159, RGB
 			shovelDist := RGB_Euclidian_Distance(hasShovel,0x495251)
-				OutputDebug Shovel: %shovelDist%
+				;OutputDebug Shovel: %shovelDist%
 				if(shovelDist < 20)
 				{
+					guiText("txt", "Pot is empty, so opening planting window.")
 					safeClick(45,170)
 					sleep, 75
 				}else
 				{
-					TrayTip TTR Tools, "Garden bot error! Couldn't find Shovel button but could find Garden Sidebar! Make a bug report!!", 1, 1
-					GuiControl,,txt, Found sidebar but couldn't find shovel button! Error!!
-					return 0
+					guiText("txt","Found sidebar, but not shovel. House name in the way?")
+					safeClick(45,170)
+					sleep, 75
+					;return 0
 				}
 			}else
 			{
-				safeClick(40,214)
-				return 2
+				;safeClick(40,214)
+				global replant
+				if(!replant)
+				{
+				guiText("txt","Plant already found for flower " . iteration . ", watering...")
+				return 0
+				}else{
+					guiText("txt", "Replanting...")
+				OutputDebug Replanting...
+					Return 6
+				}
 			}
 		}else
 		{
-			TrayTip TTR Tools, "Garden bot error! Couldn't find Garden Sidebar buttons", 1, 1
-			GuiControl,,txt, Couldn't find planter window or the garden sidebar buttons! Error!!
-			return 0
+			TrayTip TTR Tools, "Garden bot error! Couldn't find Garden Sidebar buttons. Move your toon to a pot.", 1, 1
+			guiText("txt","Couldn't find flower pot. Move your toon to a pot.")
+			sleep, 500
+			return 9
 		}
+	;END SIDEBAR CHECKING
 	}
 	boxN = 7
-	beanCount = 0
+	global beanCount = 0
+	guiText("txt", "Scanning max number of beans.")
 	loop, 8
 	{
 		getBoxCoords(boxN,boxX,boxY)
 		PixelGetColor,box,boxX,boxY, RGB
 		boxDist := RGB_Euclidian_Distance(box,0x7F7F7F)
-		if(boxDist < 20 || (boxN == 0 && RGB_Euclidian_Distance(box,0xFFFFFF) < 20))
+		firstBoxDist := RGB_Euclidian_Distance(box,0xFFFFFF)
+		test :=  (boxN == 0 && firstBoxDist < 20)
+		if(boxDist < 20 || (boxN == 0 && firstBoxDist < 20))
 		{
-			if((beanCount +1)< (boxN + 1))
+			if(beanCount == 0)
 			beanCount := boxN + 1
 		}
 	boxN--
 	}
+	guiText("txt", "Number of Beans: " . beanCount . "Verifying...")
 	OutputDebug Bean Count: %beanCount%
 	if(beanCount == 0){
-			TrayTip TTR Tools, "Couldn't figure out the max amount of beans you can plant. If you're in the planting window and beans are not selected already then file a bug report!", 10, 1
-			GuiControl,,txt, Couldn't calculate max # of JBs. Already in planter?
+			TrayTip TTR Tools, "Couldn't figure out the max amount of beans you can plant. If you're in the planting window and beans are not selected already then file a bug report! ", 10, 1
+			guiText("txt","Couldn't calculate max # of JBs. Already in planter?")
 	 return 3
 	}
-	GuiControl,,txt, Making %beanCount%-bean flower #%iteration%
+	guiText("txt","Making " . beanCount . "-bean flower #" . iteration)
 	makeFlower(beanCount,iteration)
-	GuiControl,,txt, Made %beanCount%-bean flower #%iteration%
-	boxN := 7
-		scanBeanCount := 0
-		loop, 8
+	guiText("txt", "Made " . beanCount . "-bean flower #" . iteration)
+	boxN = 7
+	global scanBeanCount = 0
+	loop, 8
 	{
 		getBoxCoords(boxN,boxX,boxY)
 		PixelGetColor,box,boxX,boxY, RGB
 		boxDist := RGB_Euclidian_Distance(box,0x7F7F7F)
-		OutputDebug Count %boxN% Dist %boxDist%
-		if(boxDist < 20 || RGB_Euclidian_Distance(box,0xFFFFFF) < 10)
+		firstBoxDist := RGB_Euclidian_Distance(box,0xFFFFFF)
+		test :=  (boxN == 0 && firstBoxDist < 20)
+		if(boxDist < 20 || (boxN == 0 && firstBoxDist < 20))
 		{
-			if((scanBeanCount +1)< (boxN + 1))
-			scanBeanCount := boxN + 1
+			if(scanBeanCount == 0)
+			{
+				scanBeanCount := boxN + 1
+			}
 		}
 	boxN--
 	}
 	if(scanBeanCount == 0)
 	{
+		guiText("txt", "Verified! Planting now!")
 		safeClick(495,435)
 		return 1
 	}
 	else
 	{
 		TrayTip TTR Tools, "I messed up so I won't click plant.", 10, 1
-		GuiControl,,txt, I think I didn't select the max amount of beans to the planter, so I won't click plant.
+		guiText("txt","I think I didn't select the max amount of beans to the planter, so I won't click plant.")
 		return 4
+	}
+}
+checkForSidebar(mode = 0, silent = true)
+{
+	/* MODES:
+	0 - Looking for status codes, which are:
+		0 = sidebar not found, 1 =  Pot Empty, 2 = Pot Full, 3 = Scan Error
+	1 - Looking to plant, making sure there's not a plant already, will click
+	2 - looking to water, will click
+	3 - Scan Error
+	
+	*/
+	;BEGIN SIDEBAR CHECKING
+	if(!checkWindow(active_id))
+	return
+;Try and click the shovel button, but don't remove a plant if it's already ther
+;Search for the water bucket button
+	PixelGetColor,hasGardenSidebar,70,145, RGB
+	sidebarDist := RGB_Euclidian_Distance(hasGardenSidebar,0xFFFF8F)
+	if(!silent) 
+		OutputDebug Sidebar: %sidebarDist%
+	if(sidebarDist < 20)
+	{
+	PixelGetColor,hasBucket,40,214, RGB
+	bucketDist := RGB_Euclidian_Distance(hasBucket,0x56C9D0)
+	if(!silent)
+		OutputDebug Bucket: %bucketDist%
+		if(bucketDist > 20)
+		{
+		;Water bucket not found, look for shovel tool
+		PixelGetColor,hasShovel,50,159, RGB
+		shovelDist := RGB_Euclidian_Distance(hasShovel,0x495251)
+			if(!silent)
+				OutputDebug Shovel: %shovelDist%
+			if(shovelDist < 20)
+			{
+				if(mode != 0)
+					{
+						safeClick(45,170)
+						sleep, 75
+					}
+				returnCode := 1
+			}else
+			{
+				if(!silent)
+				{
+
+				}
+				returnCode := 1 ; should be 3, but debugging
+			}
+		}else
+		{
+			if(mode != 0)
+			{
+				guiText("txt", "Clicking water button.")
+				safeClick(40,214)
+			}
+			returnCode := 2
+		}
+	}else
+	{
+		if(!silent)
+		{
+			TrayTip TTR Tools, "Garden bot error! Couldn't find Garden Sidebar buttons", 1, 1
+			guiText("txt","Couldn't find planter window or the garden sidebar buttons! Error!!")
+		}
+		returnCode := 9
+	}
+;END SIDEBAR CHECKING
+	if(mode != 0)
+	{
+		return (returnCode == mode)
+	}
+	else
+	{
+		return returnCode
 	}
 }
 movement(iter){
 	if(!checkWindow(active_id))
 		return
+guiText("txt", "Running movement code #" . iter)
 if(iter == 0)
 	{
 		ControlSend,, {Left DOWN},ahk_id %active_id%
-		Sleep 170
+		Sleep 281
 		ControlSend,, {Left UP},ahk_id %active_id%
+		
 		ControlSend,, {Up DOWN},ahk_id %active_id%
-		Sleep 600
+		Sleep 400
 		ControlSend,, {Up UP},ahk_id %active_id%
+		
+		ControlSend,, {Right DOWN},ahk_id %active_id%
+		Sleep 430
+		ControlSend,, {Right UP},ahk_id %active_id%
+		
+		ControlSend,, {Up DOWN},ahk_id %active_id%
+		Sleep 90
+		ControlSend,, {Up UP},ahk_id %active_id%
+		
 		OutputDebug moved!
+		guiText("txt", "Finished movement code #" . iter)
 		return true
-	}else if(iter == 1)
+	}
+	else if(iter == 1)
 	{
-		ControlSend,, {Left DOWN},ahk_id %active_id%
-		Sleep 70
+/*		ControlSend,, {Left DOWN},ahk_id %active_id%
+		Sleep 500
 		ControlSend,, {Left UP},ahk_id %active_id%
+		
+		ControlSend,, {Up DOWN},ahk_id %active_id%
+		Sleep 453
+		ControlSend,, {Up UP},ahk_id %active_id%
+		
+		ControlSend,, {Right DOWN},ahk_id %active_id%
+		Sleep 625
+		ControlSend,, {Right UP},ahk_id %active_id%
+		
+		ControlSend,, {Up DOWN},ahk_id %active_id%
+		Sleep 170
+		ControlSend,, {Up UP},ahk_id %active_id%
+
+		ControlSend,, {Right DOWN},ahk_id %active_id%
+		Sleep 710
+		ControlSend,, {Right UP},ahk_id %active_id%
+		
+		ControlSend,, {Up DOWN},ahk_id %active_id%
+		Sleep 157
+		ControlSend,, {Up UP},ahk_id %active_id%
+		*/
+		ControlSend,, {Down DOWN},ahk_id %active_id%
+		Sleep 125
+		ControlSend,, {Down UP},ahk_id %active_id%
+
+		ControlSend,, {Left DOWN},ahk_id %active_id%
+		Sleep 469
+		ControlSend,, {Left UP},ahk_id %active_id%
+		
+		ControlSend,, {Up DOWN},ahk_id %active_id%
+		Sleep 469
+		ControlSend,, {Up UP},ahk_id %active_id%
+		
+		ControlSend,, {Right DOWN},ahk_id %active_id%
+		Sleep 719
+		ControlSend,, {Right UP},ahk_id %active_id%
+		
 		ControlSend,, {Up DOWN},ahk_id %active_id%
 		Sleep 300
 		ControlSend,, {Up UP},ahk_id %active_id%
+		
+		ControlSend,, {Right DOWN},ahk_id %active_id%
+		Sleep 906
+		ControlSend,, {Right UP},ahk_id %active_id%
+		
+		ControlSend,, {Up DOWN},ahk_id %active_id%
+		Sleep 90
+		ControlSend,, {Up UP},ahk_id %active_id%
 		OutputDebug moved!
+		guiText("txt", "Finished movement code" . iter)
+		return true
+	}
+	
+	else if(iter ==2 || iter==3 || iter == 5 || iter ==7 || iter == 8)
+	{
+/*		ControlSend,, {Left DOWN},ahk_id %active_id%
+			Sleep 200
+		ControlSend,, {Left UP},ahk_id %active_id%
+		ControlSend,, {Up DOWN},ahk_id %active_id%
+		if(iter == 7)
+			Sleep 420
+		else if(iter == 5)
+			Sleep 330
+		else if(iter == 2)
+			Sleep 380
+		else
+			Sleep 410
+		ControlSend,, {Up UP},ahk_id %active_id%
+		*/
+		ControlSend,, {Left DOWN},ahk_id %active_id%
+		if(iter != 5)
+			Sleep 825
+		else
+			Sleep 800
+		ControlSend,, {Left UP},ahk_id %active_id%
+		
+		ControlSend,, {Up DOWN},ahk_id %active_id%
+		if(iter == 2 || iter == 3)
+			Sleep 141
+		else if iter !=5)
+			Sleep 140
+		else
+			Sleep 155
+		ControlSend,, {Up UP},ahk_id %active_id%
+		OutputDebug moved!
+		guiText("txt", "Finished movement code" . iter)
+		return true
+	}
+	
+	else if(iter ==4)
+	{
+		ControlSend,, {Down DOWN},ahk_id %active_id%
+		Sleep 312
+		ControlSend,, {Down UP},ahk_id %active_id%
+		ControlSend,, {Left DOWN},ahk_id %active_id%
+		Sleep 422
+		ControlSend,, {Left UP},ahk_id %active_id%
+		
+		ControlSend,, {Up DOWN},ahk_id %active_id%
+		Sleep 765
+		ControlSend,, {Up UP},ahk_id %active_id%
+		
+		ControlSend,, {Right DOWN},ahk_id %active_id%
+		Sleep 1000
+		ControlSend,, {Right UP},ahk_id %active_id%
+		
+		ControlSend,, {Up DOWN},ahk_id %active_id%
+		Sleep 150
+		ControlSend,, {Up UP},ahk_id %active_id%
+		OutputDebug moved!
+		guiText("txt", "Finished movement code" . iter)
+		return true
+	}
+	else if(iter ==6)
+	{
+		ControlSend,, {Down DOWN},ahk_id %active_id%
+		Sleep 94
+		ControlSend,, {Down UP},ahk_id %active_id%
+		
+		ControlSend,, {Left DOWN},ahk_id %active_id%
+		Sleep 672
+		ControlSend,, {Left UP},ahk_id %active_id%
+		
+		ControlSend,, {Up DOWN},ahk_id %active_id%
+		Sleep 594
+		ControlSend,, {Up UP},ahk_id %active_id%
+		
+		ControlSend,, {Right DOWN},ahk_id %active_id%
+		Sleep 656
+		ControlSend,, {Right UP},ahk_id %active_id%
+		
+		ControlSend,, {Up DOWN},ahk_id %active_id%
+		Sleep 294
+		ControlSend,, {Up UP},ahk_id %active_id%
+		
+		ControlSend,, {Right DOWN},ahk_id %active_id%
+		Sleep 830
+		ControlSend,, {Right UP},ahk_id %active_id%
+		
+		ControlSend,, {Up DOWN},ahk_id %active_id%
+		Sleep 135
+		ControlSend,, {Up UP},ahk_id %active_id%
+		OutputDebug moved!
+		guiText("txt", "Finished movement code" . iter)
+		return true
+	} else if(iter == 9)
+	{
+	ControlSend,, {Down DOWN},ahk_id %active_id%
+		Sleep 62
+		ControlSend,, {Down UP},ahk_id %active_id%
+		ControlSend,, {Left DOWN},ahk_id %active_id%
+		Sleep 688
+		ControlSend,, {Left UP},ahk_id %active_id%
+		
+		ControlSend,, {Up DOWN},ahk_id %active_id%
+		Sleep 297
+		ControlSend,, {Up UP},ahk_id %active_id%
+		
+		ControlSend,, {Right DOWN},ahk_id %active_id%
+		Sleep 500
+		ControlSend,, {Right UP},ahk_id %active_id%
+		
+		ControlSend,, {Up DOWN},ahk_id %active_id%
+		Sleep 100
+		ControlSend,, {Up UP},ahk_id %active_id%
+		return true
+	}
+	else
+	{
+		return false
+	}
+}
+getColorDist(byref thisDistance, thisPixelX, thisPixelY, thisRgbColor){
+	PixelGetColor,thisPixelColor,thisPixelX,thisPixelY, RGB
+	thisDistance := RGB_Euclidian_Distance(thisPixelColor, thisRgbColor)
+}
+plantFinishOK(){
+	getColorDist(dialogColor, 400, 370, 0xFFFFBF)	
+	if(dialogColor < 20)
+	{
+		safeClick(405,405)
 		return true
 	}else
 	{
 		return false
 	}
 }
-
-/*
-!+5:: 
-gardening := false
+return
+exitGardening(){
+global gardening := false
 gosub setStatus
+guiText("txt", "Gardening Stopped")
+}
+
+exitGardening:
+	exitGardening()
+return
+
+!+5:: 
+Suspend Permit
+if(gardening)
+{
+global gardening := false
+if(A_IsSuspended || A_IsPaused)
+{
+	Pause, Toggle, 1
+    Suspend, Toggle
+	guiText("txt", "Unpausing, Stopping Gardening...")
+}
+else
+	guiText("txt", "Stopping Gardening...")
+}
 return
 
 !+4::
-gardening := true
+gosub, runGarden
+return
+
+startGarden(){
+gosub, runGarden
+}
+runGarden:
+if(toggle)
+{
+TrayTip,TTR-Tools, Can't garden while anti-afk is running.
+return
+}
+if(trampRunning)
+{
+TrayTip,TTR-Tools, Can't garden while trampoline is running.
+return
+}
+global gardening := true
 gosub setStatus
 OutputDebug Debugging Garden bot
 width := 816
@@ -274,7 +659,12 @@ checkWindow(active_id)
 flower := 1
 flowersComplete := 0
 readyToPlant := false
+readyToMove := true
+searchingForOK := false
 moveIter := 0
+sidebarCheckCount := 0
+waterCount := 0
+timesToWater := timesToWater ;TEMPORARY UNTIL GUI... CHANGE
 Loop
 {
 	global gardening
@@ -282,15 +672,97 @@ Loop
 		break
 	if(!readyToPlant)
 	{
-		if(movement(moveIter))
+		if(readyToMove)
+		{
+			if(movement(moveIter))
+				{
+				readyToPlant := true
+				readyToMove := false
+				moveIter+=1
+				OutputDebug Move ran, next is %moveIter%
+				}
+				else
+				{
+				OutputDebug Break at moveIter %moveIter%
+				guiText("txt","Gardening Finished!")
+				break
+				}
+		}else
+		{
+			if(readyToWater)
 			{
-			readyToPlant := true
-			moveIter+=1
-			}
-			else
+				if(checkForSidebar(0) == 2)
+				{
+					guiText("txt", "Preparing to water plants.." )
+					sidebarCheckCount := 0
+					if(waterCount >= timesToWater)
+					{
+						waterCount := 0
+						global replanting
+						if(replanting)
+						{
+							guiText("txt", "Clicking okay on remove plant buttons.")
+							safeClick(45,170)
+							sleep, 125
+							safeClick(369,414)
+							safeClick(369,424)
+							safeClick(369,435)
+							safeClick(369,445)
+							sleep,100
+						}else{
+							readyToWater := false
+							readyToMove := true
+						}
+					}else{
+						guiText("txt", "Attempting to water...")
+						checkForSidebar(2)  ; waters plant
+						sleep, 50
+						if(checkForSidebar(0) != 2)
+						{
+							waterCount++
+							guiText("txt", "Watered #" . waterCount . ")")
+							OutputDebug watered %waterCount%
+						}
+					}
+				}else{
+					if(checkForSidebar(0) == 1){
+						if(replanting)
+						{
+							guiText("txt", "Done Removing Plant. Planting new...")
+							OutputDebug Done Replanting.
+							replanting := false
+							readyToPlant := true
+							readyToWater := false
+						}
+					}else{
+					sidebarCheckCount++
+					if(Mod(sidebarCheckCount, 5) == 0 || sidebarCheckCount < 2)
+						guiText("txt", "Looking for planting sidebar. (Attempt #" . sidebarCheckCount . ")")
+					if(sidebarCheckCount > 600)
+					{
+						
+						guiText("txt", "Timed out looking for planting sidebar.")
+						;Something went horribly wrong. Stop the bot
+						exitGardening()
+						TrayTip TTR Tools, "Gardening bot error. Searched for water bucket for too long", 1, 1
+					}
+				}}
+				Sleep, 50
+			}else
 			{
-			OutputDebug %moveIter%
+				if(!searchingForOK)
+				{
+					guiText("txt", "Looking for the OK button after plant is planted")
+					searchingForOK := true
+				}
+				if(plantFinishOK())
+					{		
+					guiText("txt", "Clicked OK button. Moving on...")
+						searchingForOK := false
+						readyToWater := true
+					}
 			}
+		}
 	}
 	else
 	{
@@ -300,12 +772,26 @@ Loop
 			if(result == 1)
 			{
 				flowersComplete++
-				flower++
+				if(flowersComplete >= 6) ; Makes 5th flower twice
+					{
+						if(flowersComplete > 6)
+							flower--
+					}else
+						flower++
 				readyToPlant := false
 			}else if(result == 0)
 			{
 			;fatal error
-			Pause
+			;Pause
+				flowersComplete++
+				if(flowersComplete >= 6) ; Makes 5th flower twice
+					{
+						if(flowersComplete > 6)
+							flower--
+					}else
+							flower++
+				readyToPlant := false
+				readyToWater := true
 			}
 			else if(result == 2)
 			{
@@ -321,18 +807,83 @@ Loop
 				;click reset
 				;redo loop
 			}
+			else if(result == 5)
+			{
+				;code error, iteration exceeds 5, the flower number should never exceet 5, as there are only 5 flowers for each tier of beans
+				OutputDebug, CODE ERROR! RESULT 5
+				break
+			}
+			else if(result == 6)
+			{
+				global replanting  := true
+				guiText("txt", "Detected a plant, and replant setting is on, so replanting")
+				readyToPlant := false
+				readyToWater := true
+			}
+			else if(result == 9){
+			;sidebar not found, wait
+			sleep, 500
+			;keep looping
+			}
+			else if(result == 99){
+				break
+			}
 		}else
 		{
+		OutputDebug, Unknown plant return code
 		break
 		}
 	}
 }
-global gardening := false
-gosub setStatus
+OutputDebug Stopping Gardening
+exitGardening()
 return
-*/
-NUMPAD1:: plant(1)
-NUMPAD2:: plant(2)
-NUMPAD3:: plant(3)
-NUMPAD4:: plant(4)
-NUMPAD5:: plant(5)
+
+qplant(flower){
+	if(toggle)
+	{
+	TrayTip,TTR-Tools, Can't garden while anti-afk is running.
+	return
+	}
+	if(trampRunning)
+	{
+	TrayTip,TTR-Tools, Can't garden while trampoline is running.
+	return
+	}
+	if(garden)
+	{
+	TrayTip,TTR-Tools, Can't quick plant while auto-garden is running.
+	return
+	}
+	gardening := true
+	gosub setStatus
+	result := plant(flower)
+	if(result == 6 || result == 0)
+	{
+		safeClick(45,170)
+		sleep, 125
+		safeClick(369,414)
+		safeClick(369,424)
+		safeClick(369,435)
+		safeClick(369,445)
+		sleep,100
+		qpmessage := false
+		while (checkForSidebar(0) != 1 && gardening)
+		{
+			if(!qpmessage)
+				GuiText("txt", "Waiting for shovel animation to complete.")
+			qpmessage := true
+		}
+		plant(flower)
+	}else{
+		guiText("txt", "Plant function unexpectedly returned ")
+	}
+gardening := false
+gosub setStatus
+	sendJS("updateConsole('Gardening events will be logged here.', '#garden-console', 'clear')")
+}
+NUMPAD1:: qplant(1)
+NUMPAD2:: qplant(2)
+NUMPAD3:: qplant(3)
+NUMPAD4:: qplant(4)
+NUMPAD5:: qplant(5)
