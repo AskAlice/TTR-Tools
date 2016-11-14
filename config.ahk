@@ -2,13 +2,6 @@
 version = v1.1.0
 IfNotExist %A_AppData%\TTR-Tools\config.ini
 	FileInstall, default-conf.ini, %A_AppData%\TTR-Tools\config.ini
-formatVersion( str ){
-versionNum1:= SubStr(str,2,1)
-versionNum2:= SubStr(str,4,1)
-versionNum3:= SubStr(str,6,1)
-full :=  versionNum1 . versionNum2 . VersionNum3
-return full
-}
 versionInt := formatVersion(version)
 ini = %A_AppData%\TTR-Tools\config.ini
 FileInstall, default-conf.ini, %A_AppData%\TTR-Tools\config.ini,0
@@ -44,8 +37,15 @@ if(iniUpdate != 0)
 		}
 	}
 }
-if(iniVersionInt < versionInt){
+if(iniVersionInt < versionInt || iniVersionInt == "" || !iniVersionInt || iniVersionInt == "RO"){
 FileInstall, default-conf.ini, %A_AppData%\TTR-Tools\config.ini,1
+}
+formatVersion( str ){
+versionNum1:= SubStr(str,2,1)
+versionNum2:= SubStr(str,4,1)
+versionNum3:= SubStr(str,6,1)
+full :=  versionNum1 . versionNum2 . VersionNum3
+return full
 }
 ;debug
 ;ListVars
