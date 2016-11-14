@@ -1,0 +1,24 @@
+FileCreateDir %A_Temp%\css
+FileInstall assets\fonts\robot\FileInstall.txt, %A_AppData%\TTR-Tools\assets\fonts\roboto\FileInstall.txt
+FileInstall assets\fonts\robot\Roboto-Bold.eot, %A_AppData%\TTR-Tools\assets\fonts\roboto\Roboto-Bold.eot
+FileInstall assets\fonts\robot\Roboto-Bold.ttf, %A_AppData%\TTR-Tools\assets\fonts\roboto\Roboto-Bold.ttf
+FileInstall assets\fonts\robot\Roboto-Bold.woff, %A_AppData%\TTR-Tools\assets\fonts\roboto\Roboto-Bold.woff
+FileInstall assets\fonts\robot\Roboto-Bold.woff2, %A_AppData%\TTR-Tools\assets\fonts\roboto\Roboto-Bold.woff2
+FileInstall assets\fonts\robot\Roboto-Light.eot, %A_AppData%\TTR-Tools\assets\fonts\roboto\Roboto-Light.eot
+FileInstall assets\fonts\robot\Roboto-Light.ttf, %A_AppData%\TTR-Tools\assets\fonts\roboto\Roboto-Light.ttf
+FileInstall assets\fonts\robot\Roboto-Light.woff, %A_AppData%\TTR-Tools\assets\fonts\roboto\Roboto-Light.woff
+FileInstall assets\fonts\robot\Roboto-Light.woff2, %A_AppData%\TTR-Tools\assets\fonts\roboto\Roboto-Light.woff2
+FileInstall assets\fonts\robot\Roboto-Medium.eot, %A_AppData%\TTR-Tools\assets\fonts\roboto\Roboto-Medium.eot
+FileInstall assets\fonts\robot\Roboto-Medium.ttf, %A_AppData%\TTR-Tools\assets\fonts\roboto\Roboto-Medium.ttf
+FileInstall assets\fonts\robot\Roboto-Medium.woff, %A_AppData%\TTR-Tools\assets\fonts\roboto\Roboto-Medium.woff
+FileInstall assets\fonts\robot\Roboto-Medium.woff2, %A_AppData%\TTR-Tools\assets\fonts\roboto\Roboto-Medium.woff2
+FileInstall assets\fonts\robot\Roboto-Regular.eot, %A_AppData%\TTR-Tools\assets\fonts\roboto\Roboto-Regular.eot
+FileInstall assets\fonts\robot\Roboto-Regular.ttf, %A_AppData%\TTR-Tools\assets\fonts\roboto\Roboto-Regular.ttf
+FileInstall assets\fonts\robot\Roboto-Regular.woff, %A_AppData%\TTR-Tools\assets\fonts\roboto\Roboto-Regular.woff
+FileInstall assets\fonts\robot\Roboto-Regular.woff2, %A_AppData%\TTR-Tools\assets\fonts\roboto\Roboto-Regular.woff2
+FileInstall assets\fonts\robot\Roboto-Thin.eot, %A_AppData%\TTR-Tools\assets\fonts\roboto\Roboto-Thin.eot
+FileInstall assets\fonts\robot\Roboto-Thin.ttf, %A_AppData%\TTR-Tools\assets\fonts\roboto\Roboto-Thin.ttf
+FileInstall assets\fonts\robot\Roboto-Thin.woff, %A_AppData%\TTR-Tools\assets\fonts\roboto\Roboto-Thin.woff
+FileInstall assets\fonts\robot\Roboto-Thin.woff2, %A_AppData%\TTR-Tools\assets\fonts\roboto\Roboto-Thin.woff2
+FileInstall assets\fonts\robot\test.ahk, %A_AppData%\TTR-Tools\assets\fonts\roboto\test.ahk
+SetWorkingDir %A_temp%\css

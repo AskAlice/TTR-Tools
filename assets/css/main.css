@@ -1,0 +1,49 @@
+html{margin:0;padding:0;overflow:auto;}
+body{font-family:sans-serif;background-color:#dde4ec;}
+#title{font-size:36px;}
+#corner{font-size:10px;position:absolute;top:8px;right:8px;}
+#footer{text-align:center;}
+.icon-block {
+  padding: 0 15px;
+}
+.icon-block .material-icons {
+	font-size: inherit;
+}
+.tab {
+  height:96px !important;
+}
+.tabs .tab a{
+  height: auto !important;
+}
+canvas{
+    width: 100% !important;
+    height:100px !important;
+    line-height: 1;
+    background:#333;
+}
+.console{
+  background: #131313;
+  color:#fff;
+  margin:0;
+  line-height:1;
+  max-height:45px;
+  font-family:Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
+}
+.console:hover{
+  max-height:250px;
+}
+#garden-console{
+  height:250px;
+  max-height:250px;
+}
+#garden-console:hover{
+  max-height:500px;
+}
+.console-container{
+    margin-top:-6px;
+    padding:10px !important;
+    background:#131313 !important;
+}
+.tab label{
+  color:#fff;
+}

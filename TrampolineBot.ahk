@@ -1,28 +1,43 @@
 #Include XGraph.ahk
 enableFeatureTrampoline = true
 #Include Gui.ahk
+
+exitTrampoline(){
+looping := false
+}
 !+3:: 
 looping := false
 return
 
 !+2:: 
+gosub, runTrampoline
+return
+startTrampoline(){
+gosub, runTrampoline
+}
+runTrampoline:
 width := 816
 height := 639
+gardeningLabel = exitGardening
+global gardening
+guiText("txt","Starting Trampoline...")
+if(enableFeatureGarden)
+	if(gardening)
+		gosub, %gardeningLabel%
 ;Bool used for GUI
-trampRunning :=true
 ;using Label variable to avoid compilation errors when built standalone
 toggleAFKLabel = toggleAFK
 if(enableFeatureAFK)
 	if(toggle)
 	{
 		gosub, %toggleAFKLabel%
+		sleep, 250
 	}
+trampRunning :=true
 ;OutputDebug Started
 ;GUI changes while in this bot
-GuiControl,,txt,Trampoline Bot Searching. Stop with ALT+SHIFT+3
-GuiControl, Enable, repeat
-GuiControl, Disable, timeAFK
-GuiControl, Disable, timeAFKUD
+guiText("txt","Trampoline Bot Searching. Stop with ALT+SHIFT+3")
+GuiControl, TTRTools:Enable, repeat
 goSub, Save
 ;Menu Tray, Icon, tramp.ico
 
@@ -40,12 +55,12 @@ IfWinExist, Toontown Rewritten [BETA]
 else
     {
 	TrayTip TTR Tools, "Toontown Application not open", 1, 1
-	GuiControl,,txt, Toontown not open
+	guiText("txt","Toontown not open")
 	trampRunning := false
 	goSub setStatus
-	GuiControl, Show, textAFK
-	GuiControl, Show, timeAFK
-	GuiControl, Show, timeAFKUD
+	GuiControl, TTRTools:Show, textAFK
+	GuiControl, TTRTools:Show, timeAFK
+	GuiControl, TTRTools:Show, timeAFKUD
 	return
 	}
 TrayTip TTR Tools, "Looking for trampoline meter. Keep window focused.", 1,32
@@ -68,10 +83,10 @@ loop
 	TrayTip TTR Tools,"Trampoline bot stopped by hotkey", 1,32
 	trampRunning := false
 	;GoSub, setStatus
-	GuiControl,,txt, Trampoline bot graph will plot when running
-	GuiControl, Show, textAFK
-	GuiControl, Show, timeAFK
-	GuiControl, Show, timeAFKUD
+	guiText("txt","Trampoline bot graph will plot when running")
+	GuiControl, TTRTools:Show, textAFK
+	GuiControl, TTRTools:Show, timeAFK
+	GuiControl, TTRTools:Show, timeAFKUD
 	break
 	} 
 	;PixelSearch, Px, Py, 5, 451, 65, 459, 0xEFEFEF, 10 Fast RGB
@@ -118,13 +133,14 @@ loop
 				else
 					prevStrength:= 0
 		}
-		if(looped && count > 10 && prevStrength > 0)
+		if(looped && count > 10 && prevStrength > 0 && Px > 0 && Py > 0)
 		{
 		elapsedtime := A_TickCount - _starttime
 				;OutputDebug %count% color %color% variance %variance% pixel %highestPy% distance %bunceD%, lag %elapsedtime%
 			prevStrength := count
 			XGraph_Plot(pGraph,310-(elapsedtime*0.0596153846))
-			GuiControl,,txt, Variance %variance%, Strength %count%, Time %elapsedtime%
+			;guiText("txt","Variance " . variance . ", Strength " . count . ", Time " . elapsedtime)
+			sendJS("plotTrampoline(" . (elapsedtime*0.0596153846) . ", 'Variance " . variance . ", Strength " . count . ", Time " . elapsedtime  . "');")			
 			count := 0
 			_starttime := A_TickCount 
 			XGraph_Plot(vGraph,40-variance)
@@ -147,12 +163,12 @@ loop
 			else
 			{
 				TrayTip TTR Tools, "Toontown Application not open", 1, 1
-				GuiControl,,txt, Toontown not open
+				guiText("txt","Toontown not open")
 				trampRunning := false
 				goSub setStatus
-				GuiControl, Show, textAFK
-				GuiControl, Show, timeAFK
-				GuiControl, Show, timeAFKUD
+				GuiControl, TTRTools:Show, textAFK
+				GuiControl, TTRTools:Show, timeAFK
+				GuiControl, TTRTools:Show, timeAFKUD
 				return
 			}
 			if(repeat)
@@ -162,7 +178,7 @@ loop
 				if(dist > 25)
 				{
 					prevStrength:= 0
-					GuiControl,,txt, Jump Bar not detected. Don't resize TT or tab out. Disable Flux
+					guiText("txt","Jump Bar not detected. Don't resize TT or tab out. Disable Flux")
 					PixelGetColor,okbtn,400,450 RGB
 					okbDist := RGB_Euclidian_Distance(okbtn,0x50CC22)
 					if(okbDist < 30)
@@ -205,12 +221,10 @@ loop
 		looped :=true
 	}
 }
-trampRunning := false
+global trampRunning := false
 goSub, setStatus
-GuiControl,,txt, Trampoline bot graph will plot when running
-GuiControl, Show, textAFK
-GuiControl, Show, timeAFK
-GuiControl, Show, timeAFKUD
+guiText("txt","Trampoline bot graph will plot when running")
+sendJS("updateConsole('Trampoline will graph when running, and events will be logged here.', '#trampoline-console', 'clear')")
 ;Menu Tray, Icon, def.ico
 ;OutputDebug Stopped
 return

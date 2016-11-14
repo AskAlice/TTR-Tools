@@ -1,5 +1,5 @@
 #include json.ahk
-version = v1.0.4
+version = v1.1.0
 IfNotExist %A_AppData%\TTR-Tools\config.ini
 	FileInstall, default-conf.ini, %A_AppData%\TTR-Tools\config.ini
 formatVersion( str ){
@@ -17,6 +17,8 @@ iniVersionInt := formatVersion(iniVer)
 IniRead, iniUpdate, %ini%,TTR-Tools, CheckUpdate
 IniRead, iniRep, %ini%,Trampoline, repeat
 IniRead, iniAFKMins, %ini%, AFK, afkMins
+IniRead, iniTimesToWater, %ini%, Garden, timesToWater
+IniRead, iniReplant, %ini%, Garden, replant
 download = % URLDownloadToVar("https://api.github.com/repos/thezoid/TTR-Tools/releases/latest")
 parsed := JSON.load(download)
 liveVer := parsed.tag_name

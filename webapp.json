@@ -1,0 +1,9 @@
+{
+  "name":				"TTR Tools",
+  "width":				750,
+  "height":				500,
+  "protocol":			"app",
+  "protocol_call":		"app_call",
+  "html_url":			"index.html",
+  "NavComplete_call":	"app_page"
+}
