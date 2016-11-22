@@ -20,7 +20,8 @@ width := 816
 height := 639
 gardeningLabel = exitGardening
 global gardening
-guiText("txt","Starting Trampoline...")
+sendJS("updateConsole('Trampoline will graph when running, and events will be logged here.\r\n\r\n------------------\r\n', '#trampoline-console')")
+sleep, 100
 if(enableFeatureGarden)
 	if(gardening)
 		gosub, %gardeningLabel%
@@ -36,10 +37,11 @@ if(enableFeatureAFK)
 trampRunning :=true
 ;OutputDebug Started
 ;GUI changes while in this bot
-guiText("txt","Trampoline Bot Searching. Stop with ALT+SHIFT+3")
+guiText("txt","Trampoline Bot Searching. Stop with ALT+SHIFT+3                 \r\nStarting Trampoline...")
+sleep, 100
 GuiControl, TTRTools:Enable, repeat
 goSub, Save
-;Menu Tray, Icon, tramp.ico
+;Menu, Tray, Icon, %A_AppData%\TTR-Tools\tramp.ico
 
 ;Make sure the graph is shown
 XGraph_Plot(pGraph)
@@ -83,7 +85,7 @@ loop
 	TrayTip TTR Tools,"Trampoline bot stopped by hotkey", 1,32
 	trampRunning := false
 	;GoSub, setStatus
-	guiText("txt","Trampoline bot graph will plot when running")
+	GuiControl, TTRTools:, txt, Trampoline will graph when running
 	GuiControl, TTRTools:Show, textAFK
 	GuiControl, TTRTools:Show, timeAFK
 	GuiControl, TTRTools:Show, timeAFKUD
@@ -140,6 +142,7 @@ loop
 			prevStrength := count
 			XGraph_Plot(pGraph,310-(elapsedtime*0.0596153846))
 			;guiText("txt","Variance " . variance . ", Strength " . count . ", Time " . elapsedtime)
+			GuiControl,TTRTools:,txt, Variance %variance% Strength %count% Time %elapsedtime%
 			sendJS("plotTrampoline(" . (elapsedtime*0.0596153846) . ", 'Variance " . variance . ", Strength " . count . ", Time " . elapsedtime  . "');")			
 			count := 0
 			_starttime := A_TickCount 
@@ -177,8 +180,9 @@ loop
 				dist := RGB_Euclidian_Distance(purp,0x8d519a)
 				if(dist > 25)
 				{
+					if(count == 341)
+						guiText("txt","Jump Bar not detected. Don't resize TT or tab out. Disable Flux")
 					prevStrength:= 0
-					guiText("txt","Jump Bar not detected. Don't resize TT or tab out. Disable Flux")
 					PixelGetColor,okbtn,400,450 RGB
 					okbDist := RGB_Euclidian_Distance(okbtn,0x50CC22)
 					if(okbDist < 30)
@@ -221,10 +225,14 @@ loop
 		looped :=true
 	}
 }
+trampRunning := true
+guiText("txt","Stopping Trampoline Bot")
+guiText("txt","\r\n------------------\r\n", ,false)
+trampRunning := false
+guiControl, TTRTools:, txt, Stopped Trampoline bot
+sleep, 150
 global trampRunning := false
 goSub, setStatus
-guiText("txt","Trampoline bot graph will plot when running")
-sendJS("updateConsole('Trampoline will graph when running, and events will be logged here.', '#trampoline-console', 'clear')")
-;Menu Tray, Icon, def.ico
+;Menu, Tray, Icon, %A_AppData%\TTR-Tools\def.ico
 ;OutputDebug Stopped
 return

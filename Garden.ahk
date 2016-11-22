@@ -168,6 +168,7 @@ safeClick(x,y){
 	clickBean(bean){
 	getBeanCoords(bean,x,y)
 	safeClick(x,y)
+	sleep, 50
 	}
 		makeFlower(beanCount,iteration){
 			flower := getBeanData(beanCount,iteration)
@@ -306,7 +307,10 @@ plant(iteration){
 	else
 	{
 		TrayTip TTR Tools, "I messed up so I won't click plant.", 10, 1
-		guiText("txt","I think I didn't select the max amount of beans to the planter, so I won't click plant.")
+		guiText("txt","I think I didn't select the max amount of beans to the planter, so I'll reset.")
+		safeClick(405,435)
+		sleep, 100
+		safeClick(405,435)
 		return 4
 	}
 }
@@ -608,7 +612,6 @@ return
 exitGardening(){
 global gardening := false
 gosub setStatus
-guiText("txt", "Gardening Stopped")
 }
 
 exitGardening:
@@ -619,7 +622,6 @@ return
 Suspend Permit
 if(gardening)
 {
-global gardening := false
 if(A_IsSuspended || A_IsPaused)
 {
 	Pause, Toggle, 1
@@ -628,6 +630,7 @@ if(A_IsSuspended || A_IsPaused)
 }
 else
 	guiText("txt", "Stopping Gardening...")
+global gardening := false
 }
 return
 
@@ -664,7 +667,8 @@ searchingForOK := false
 moveIter := 0
 sidebarCheckCount := 0
 waterCount := 0
-timesToWater := timesToWater ;TEMPORARY UNTIL GUI... CHANGE
+guiText("txt", "Starting Auto-Gardening\r\n------------------ \r\n")
+GuiControl, TTRTools:, txt, Started Auto-Gardening
 Loop
 {
 	global gardening
@@ -695,7 +699,8 @@ Loop
 				{
 					guiText("txt", "Preparing to water plants.." )
 					sidebarCheckCount := 0
-					if(waterCount >= timesToWater)
+					
+					if((waterCount >= timesToWater) || (replanting && timesToWater == 1))
 					{
 						waterCount := 0
 						global replanting
@@ -804,6 +809,9 @@ Loop
 			}
 			else if(result == 4)
 			{
+				safeClick(405,435)
+				sleep, 50
+				safeClick(405,435)
 				;click reset
 				;redo loop
 			}
@@ -836,6 +844,10 @@ Loop
 	}
 }
 OutputDebug Stopping Gardening
+gardening := true
+guiText("txt", "\r\n------------------ \r\nStopped Auto-Gardening" ,,false)
+GuiControl, TTRTools:, txt, Stopped Auto-Gardening
+gardening := false
 exitGardening()
 return
 
@@ -857,14 +869,21 @@ qplant(flower){
 	}
 	gardening := true
 	gosub setStatus
+	sleep, 250
+	guiText("txt", "Started Macro-Gardening\r\n------------------ \r\n")
+	GuiControl, TTRTools:, txt, Started Macro-Gardening
+	sleep, 150
 	result := plant(flower)
 	if(result == 6 || result == 0)
 	{
 		safeClick(45,170)
 		sleep, 125
 		safeClick(369,414)
+		sleep, 30
 		safeClick(369,424)
+		sleep, 30
 		safeClick(369,435)
+		sleep, 30
 		safeClick(369,445)
 		sleep,100
 		qpmessage := false
@@ -874,16 +893,158 @@ qplant(flower){
 				GuiText("txt", "Waiting for shovel animation to complete.")
 			qpmessage := true
 		}
-		plant(flower)
+		GuiText("txt", "Finished waiting for shovel animation to complete. " . result)
+		result := plant(flower)
+	}else
+	if(result== 4){
+	safeClick(405,435)
+	sleep, 50
+	safeClick(405,435)
+	result := plant(flower)
+	if(result == 6 || result == 0)
+	{
+		safeClick(45,170)
+		sleep, 125
+		safeClick(369,414)
+		sleep, 30
+		safeClick(369,424)
+		sleep, 30
+		safeClick(369,435)
+		sleep, 30
+		safeClick(369,445)
+		sleep,100
+		qpmessage := false
+		while (checkForSidebar(0) != 1 && gardening)
+		{
+			if(!qpmessage)
+			{
+				search := checkForSidebar(0)
+				GuiText("txt", "Waiting for shovel animation to complete. " . search)
+				
+			}qpmessage := true
+		}
+		GuiText("txt", "Finished waiting for shovel animation to complete")
+	}else if(result== 4){
+	safeClick(405,435)
+	sleep, 50
+	safeClick(405,435)
+	result := plant(flower)
+	guiText("txt", "Retrying planting for last time")
 	}else{
-		guiText("txt", "Plant function unexpectedly returned ")
+		if(result != 1)
+			guiText("txt", "Plant function unexpectedly returned: " . result)
 	}
+	}else{
+		if(result != 1)
+			guiText("txt", "Plant function unexpectedly returned: " . result)
+	}
+gardening := true
+guiText("txt", "\r\n------------------ \r\nStopped Macro-Gardening" ,, false)
+GuiControl, TTRTools:, txt, Stopped Macro-Gardening
 gardening := false
 gosub setStatus
-	sendJS("updateConsole('Gardening events will be logged here.', '#garden-console', 'clear')")
 }
 NUMPAD1:: qplant(1)
 NUMPAD2:: qplant(2)
 NUMPAD3:: qplant(3)
 NUMPAD4:: qplant(4)
 NUMPAD5:: qplant(5)
+NUMPADDot::
+if(!gardening)
+{
+	gosub trainCan
+}
+else
+{
+	exitGardening()
+	gosub, setStatus
+	return
+}
+return
+
+trainCan:
+gardening := true
+gosub setStatus
+TrayTip TTR Tools, "Starting Watering Can Trainer", 1, 1
+guiText("txt", "Training Watering Can\r\n------------------ \r\n")
+GuiControl, TTRTools:, txt, Training water can...
+sleep, 150
+timesWatered := 0
+canTrainerTimeout := 0
+while(gardening){
+curstatus := checkForSidebar(0)
+OutputDebug Status %curstatus% Watered %timesWatered% Time %canTrainerTimeout%
+if(curstatus == 1){
+	safeClick(45,170)
+	sleep, 75
+	guiText("txt", "Making a 1-bean flower...")
+	makeFlower(1,1)
+	safeClick(495,435)
+}
+if((curstatus == 2))
+{
+	if(timesWatered < timesToWater)
+	{
+		guiText("txt", "Trying to Water...")
+		result := checkForSidebar(2)
+		timesWatered++
+	}
+	else{
+			safeClick(45,170)
+			sleep, 75
+			safeClick(369,414)
+			sleep, 30
+			safeClick(369,424)
+			sleep, 30
+			safeClick(369,435)
+			sleep, 30
+			safeClick(369,445)
+			sleep,100
+
+	}
+}
+if(curstatus == 4)
+	{
+	safeClick(405,435)
+	sleep, 50
+	safeClick(405,435)
+	}
+if(curstatus == 9)
+	{
+		if(plantFinishOK())
+			{
+				guiText("txt", "Finished making plant.")
+				timesWatered := 0
+				canTrainerTimeout := 0
+			}
+			PixelGetColor,boxOpen,400,250, RGB
+			boxOpenDist := RGB_Euclidian_Distance(boxOpen,0xFFFFBF)
+			if(boxOpenDist < 20)
+			{
+				;Bean Picker found, no need to click the shovel button
+				safeClick(405,435)
+				sleep, 50
+				safeClick(405,435)
+				sleep, 75
+				guiText("txt", "Making a 1-bean flower...")
+				makeFlower(1,1)
+				safeClick(495,435)
+			}
+		canTrainerTimeout++
+		if(Mod(canTrainerTimeout, 10) == 0 || canTrainerTimeout < 2)
+						guiText("txt", "Looking for planting sidebar. (Attempt #" . canTrainerTimeout . ")")
+		if(canTrainerTimeout > 300)
+		{
+			gardening := false
+			guiText("txt", "Watering can trainer timed out...")
+		}
+	}
+if(curstatus != 9)
+	canTrainerTimeout := 0
+}
+gardening := true
+guiText("txt", "\r\n------------------ \r\nStopping watering can trainer...",, false)
+GuiControl, TTRTools:, txt, Stopping watering can trainer...
+gardening := false
+gosub setStatus
+return

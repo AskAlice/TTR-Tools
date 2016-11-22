@@ -58,6 +58,7 @@ $( document ).ready(function() {
   }); // end of document ready
   window.onerror = function(msg, url, linenumber, colnumber, error) {
   updateConsole('Javascript Error: '+msg+'\nError: '+error+'\nLine:'+linenumber+' Column:'+colnumber+' \nURL:'+url+' \n',"#error-console")
+  AHK('verifyError')
   return true;
 }
 var canvas = document.getElementById('updating-chart'),

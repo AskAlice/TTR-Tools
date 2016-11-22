@@ -46,13 +46,19 @@ FileInstall assets\fonts\roboto\Roboto-Thin.woff2, %A_AppData%\TTR-Tools\assets\
 FileInstall, index.html, %A_AppData%\TTR-Tools\index.html,1
 FileInstall, webapp.json, %A_AppData%\TTR-Tools\webapp.json,1
 
+FileInstall, def.ico, %A_AppData%\TTR-Tools\def.ico,0
+FileInstall, antiafk.ico, %A_AppData%\TTR-Tools\antiafk.ico,0
+FileInstall, gardening.ico, %A_AppData%\TTR-Tools\gardening.ico,0
+FileInstall, tramp.ico, %A_AppData%\TTR-Tools\tramp.ico,0
+
 if A_IsCompiled
 {
-  Menu, Tray, Icon, %A_ScriptFullPath%, -159
+  ;Menu, Tray, Icon, %A_ScriptFullPath%, -159
+  Menu, Tray, Icon, %A_AppData%\TTR-Tools\def.ico
 }
 else
 {
-	Menu, Tray, Icon, def.ico
+	Menu, Tray, Icon, %A_AppData%\TTR-Tools\def.ico
 	Run, "C:\Program Files (x86)\Pandoc\pandoc.exe" README.md -o README.html
 }
 
@@ -159,12 +165,8 @@ if(enableFeatureAFK || enableFeatureTrampoline || enableFeatureGarden)
 if(enableFeatureAFK || enableFeatureTrampoline || enableFeatureGarden)
 {
 	Gui, TTRTools:Add, Text,x0 vtxt w300 h15,Trampoline bot graph will plot when running
-if(enableFeatureTrampoline)
-	GuiText("txt","Trampoline bot graph will plot when running")
-else if(enableFeatureAFK)
-	GuiText("txt","Anti-AFK will plot when running")
-else if(enableFeatureGarden)
-	GuiText("txt","Garden bot not running")
+	if(!enableFeatureTrampoline)
+	GuiControl, TTRTools:, txt, Enable a bot
 }
 if(enableFeatureAFK || enableFeatureTrampoline)
 {
@@ -188,15 +190,38 @@ if(enableFeatureAFK)
 
 return
 
-guiText(controlVar, controlText, guiName:="TTRTools:")
+guiText(controlVar, controlText, guiName:="TTRTools:",showTime:=true)
 {
 ;OutputDebug GuiControl,%guiName%,%controlVar%,%ControlText%
 GuiControl,%guiName%,%controlVar%,%ControlText%
 global trampRunning
 global gardening
 global toggle
+StringReplace, controlText, controlText, ',, All
+/*
+\"(.*?\'.*)\"
+*/
+regex := RegExMatch(controlText, "(.*?\'.*)")
+if((regex != "" && regex != "0") || regex)
+	{
+		OutputDebug REGEX Returned %regex%
+		guiText("txt", "Regex Returned: " . regex)
+	}
 if(controlVar == "txt")
 {
+		FormatTime, TimeString,, h:mm:ss
+	if(showTime)
+	{
+	if(trampRunning)
+		sendJS("updateConsole('[" . TimeString . "] " . controlText . "')")
+	else if(gardening)
+		sendJS("updateConsole('[" . TimeString . "] " . controlText . "', '#garden-console')")
+	else if(toggle)
+		sendJS("updateConsole('[" . TimeString . "] " . controlText . "', '#afk-console')")
+	else
+		sendJS("updateConsole('[" . TimeString . "][unknown-task] " . controlText . "', '#error-console')")
+	}
+	else{
 	if(trampRunning)
 		sendJS("updateConsole('" . controlText . "')")
 	else if(gardening)
@@ -204,11 +229,11 @@ if(controlVar == "txt")
 	else if(toggle)
 		sendJS("updateConsole('" . controlText . "', '#afk-console')")
 	else
-		sendJS("updateConsole('" . controlText . "')")
+		sendJS("updateConsole('[" . TimeString . "][unknown-task] " . controlText . "', '#error-console')")
+		}
+	}
 }
 
-
-}
 Help::
     Gui , help:Destroy
 	if A_IsCompiled
@@ -288,6 +313,14 @@ setStatus:
 			GuiText("status3","Garden " . gardening . " |")
 		sleep, 250
 		updateToggles(toggle,trampRunning,gardening)
+		if(gardening)
+			Menu, Tray, Icon, %A_AppData%\TTR-Tools\gardening.ico
+		else if(toggle)
+			Menu, Tray, Icon, %A_AppData%\TTR-Tools\antiafk.ico
+		else if(trampRunning)
+			Menu, Tray, Icon, %A_AppData%\TTR-Tools\tramp.ico
+		else
+			Menu, Tray, Icon, %A_AppData%\TTR-Tools\def.ico
 return
 
 ;Debug information
