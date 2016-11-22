@@ -37,6 +37,8 @@ app_page(NewURL) {
 }
 sendJS(js) {
 wb := getDOM()
+;OutputDebug %js%
+global lastJS .= js . "\r\n"
 try wb.Navigate("javascript:" . js)
 catch e{
 OutputDebug error %e%
@@ -76,6 +78,9 @@ switchTo(mode){
 */
 documentReady(){
 
+}
+verifyError(){
+OutputDebug error found at %lastjs%
 }
 updateToggles(afk,tram,gard){
 	wb := getDOM()
@@ -134,10 +139,10 @@ updateSetting(setting,value){
 	OutputDebug repeat
 		if(value != "0" && value != 0 && value != "false")
 		{
-		 MsgBox,,, "It's True!"
+		GuiControl,TTRTools:,repeat,1
 		}
 		else
-		MsgBox,,, "It's False!"
+		GuiControl,TTRTools:,repeat,0
 	}
 }
 Hello() {

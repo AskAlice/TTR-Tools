@@ -47,3 +47,9 @@ canvas{
 .tab label{
   color:#fff;
 }
+.markdown-body ul li{
+	list-style-type:disc;
+	}
+	.markdown-body ul li ul li{
+	list-style-type:circle;
+	}
