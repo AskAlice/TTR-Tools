@@ -107,12 +107,12 @@ TTR-Tools is a Toontown Rewritten AutoHotKey helper. Currently has Anti-AFK and 
 	</div>
 	<div id="afk">
 		<canvas id="afk-chart" width="700" height="100"></canvas>
+			<div class="console-container">
+				<pre id="afk-console" class="console">Anti AFK events will be logged here.</pre>
+			</div>
 		<div class="container row">
 			<div class="s12 card-panel" style="margin-bottom:0px;">
 				Enable/disable by CTRL+ALT+SHIFT+1. The Anti AFK will run even when TTR isn't focused. So you can continue to use your computer. As the AFK is on, the lower graph will show you how often it is ticking the Anti AFK. Every so often the graph in the old gui will update, and when the AFK ticks it will spike up for one plot. The Anti-AFK can not be enabled while the trampoline is on. Use the 'Repeat' option to leave the bot on (more info below).
-			</div>
-			<div class="console-container">
-				<pre id="afk-console" class="console">Anti AFK events will be logged here.</pre>
 			</div>
 </div>
 			<div class="container row">
@@ -141,6 +141,9 @@ TTR-Tools is a Toontown Rewritten AutoHotKey helper. Currently has Anti-AFK and 
 			</div>
 	</div>
 	<div id="garden">
+			<div class="console-container" style="margin-top:auto;">
+				<pre id="garden-console" class="console">Gardening events will be logged here.</pre>
+			</div>
 		<div class="container row">
 			<div class="s12 card-panel" style="margin-bottom:0px;">
 				<p>If your toon falls off course while the bot is running, press the Pause/break button (next to print screen and scroll lock), walk up to a pot and center your toon facing it, then hit the Pause/break button again. You can tell that it is paused because the taskbar icon will look different.
@@ -155,9 +158,6 @@ TTR-Tools is a Toontown Rewritten AutoHotKey helper. Currently has Anti-AFK and 
 					<input type="range" id="water" name="water" min="0" max="5" />
 					</p>
 				</div>
-			</div>
-			<div class="console-container">
-				<pre id="garden-console" class="console">Gardening events will be logged here.</pre>
 			</div>
 </div>
 	</div>
@@ -179,6 +179,7 @@ TTR-Tools is a Toontown Rewritten AutoHotKey helper. Currently has Anti-AFK and 
         <h5 class="white-text">Settings</h5>
         <ul>
 					<li><a id="config" href="#">Open Config</a></li>
+					<li><a id="config" href="http://localhost/toontest.php">Gag Training sweet spot finder</a></li>
         </ul>
       </div>
     </div>
