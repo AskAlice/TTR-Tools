@@ -183,18 +183,21 @@ function updateStatus(control,status){
       $('#ttab input').prop("checked", true);
       $("#ttab div").attr("data-tooltip", "Disable with CTRL+SHIFT+3");
       $('.switch').tooltip({delay: 50});
+	  $('#ttab a').click();
     }else if(control == "a"){
       $('.tabs').attr("data-transitioning", true);
       console.log("TRANS" + $('.tabs').attr("data-transitioning"));
       $('#atab input').prop("checked", true);
       $("#atab div").attr("data-tooltip", "Disable with CTRL+SHIFT+1");
       $('.switch').tooltip({delay: 50});
+	  $('#atab a').click();
     }else if(control == "g"){
       $('.tabs').attr("data-transitioning", true);
       console.log("TRANS" + $('.tabs').attr("data-transitioning"));
       $('#gtab input').prop("checked", true);
       $("#gtab div").attr("data-tooltip", "Disable with CTRL+SHIFT+5");
       $('.switch').tooltip({delay: 50});
+	  $('#gtab a').click();
     }else{
       console.log("$('" + control + "').prop('checked'," + status + ")");
       $(control).prop("checked",status);
