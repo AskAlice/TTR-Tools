@@ -1,0 +1,10 @@
+Donald's Dreamland = Z
+The Brrgh = B
+Goofy Speedway = R
+Toontown Central = C
+Daisy Gardens = G
+Acorn Acres = A
+Sellbot = E
+Lawbot = L
+Bossbot = O
+Cashbot = $

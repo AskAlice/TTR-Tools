@@ -42,6 +42,9 @@ else
 	{
 	;Quit Anti AFK
 	Gosub, setStatus
+	sleep, 100
+		sendJS("plotAFK(0);")
+	sleep, 100
 	TrayTip TTR Tools, "Anti AFK Stopped", 1
 	vGraph := XGraph_Detach(vGraph) 
 	vGraph := XGraph( vGraphv, 0x688443, 5, "0,0,0,0", 0x649e90,1 )
