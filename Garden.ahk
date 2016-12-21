@@ -175,14 +175,26 @@ safeClick(x,y){
 			loop, % flower.MaxIndex()
 				clickBean(flower[A_Index])
 		}
-		
+	
+
+
+/* THE PLANT FUNCTION 
+ This clicks the shovel icon, scans the number of beans you can plant, then plants the plant of index `iteration` with the most beans possible.
+This function will return:
+0 - Replant not enabled so the plant should be watered.
+1 - Completed Successfully
+3 - Couldn't calculate max jbs
+4 -  Didn't select max amount of beans, so reset
+5 - Code error, iteration exceeds 5, the flower number should never exceet 5, as there are only 5 flowers for each tier of beans
+6 - Replant enabled and the plant should be replaced.
+*/
 plant(iteration){
 	guiText("txt", "Attempting to plant flower #" . iteration)
 	if(iteration > 5 && iteration <= 10)
-		iteration := iteration - 5
+		iteration := 6-(iteration-5)
 	if(iteration > 10)
 		iteration := iteration - 10
-	
+		guiText("txt", "Real flower # is:" . iteration)
 	if(iteration > 5)
 		return 5
 	if(!checkWindow(active_id))
@@ -310,6 +322,8 @@ plant(iteration){
 		guiText("txt","I think I didn't select the max amount of beans to the planter, so I'll reset.")
 		safeClick(405,435)
 		sleep, 100
+		safeClick(405,435)
+		safeClick(405,435)
 		safeClick(405,435)
 		return 4
 	}
@@ -635,6 +649,7 @@ global gardening := false
 return
 
 !+4::
+global shouldMacroPlant := false
 gosub, runGarden
 return
 
@@ -654,15 +669,17 @@ return
 }
 global gardening := true
 gosub setStatus
+global shouldMacroPlant
+global singlePlantNumber
 OutputDebug Debugging Garden bot
 width := 816
 height := 639
 SendMode Input
 checkWindow(active_id)
-flower := 1
+flower := shouldMacroPlant ? singlePlantNumber : 1
 flowersComplete := 0
-readyToPlant := false
-readyToMove := true
+readyToPlant := shouldMacroPlant ? true : false
+readyToMove := shouldMacroPlant ? false : true
 searchingForOK := false
 moveIter := 0
 sidebarCheckCount := 0
@@ -678,6 +695,11 @@ Loop
 	{
 		if(readyToMove)
 		{
+			if(shouldMacroPlant)
+			{
+				GuiText("txt", "loop broken by movement tick")
+				break
+			}
 			if(movement(moveIter))
 				{
 				readyToPlant := true
@@ -742,7 +764,7 @@ Loop
 					}else{
 					sidebarCheckCount++
 					if(Mod(sidebarCheckCount, 5) == 0 || sidebarCheckCount < 2)
-						guiText("txt", "Looking for planting sidebar. (Attempt #" . sidebarCheckCount . ")")
+						guiText("txt", "Looking for planting sidebar. (Attempt #" . sidebarCheckCount . " Code:" . checkForSidebar(0) . ")")
 					if(sidebarCheckCount > 600)
 					{
 						
@@ -776,25 +798,13 @@ Loop
 			result := plant(flower)
 			if(result == 1)
 			{
+				flower++
 				flowersComplete++
-				if(flowersComplete >= 6) ; Makes 5th flower twice
-					{
-						if(flowersComplete > 6)
-							flower--
-					}else
-						flower++
 				readyToPlant := false
 			}else if(result == 0)
 			{
-			;fatal error
-			;Pause
+				flower++
 				flowersComplete++
-				if(flowersComplete >= 6) ; Makes 5th flower twice
-					{
-						if(flowersComplete > 6)
-							flower--
-					}else
-							flower++
 				readyToPlant := false
 				readyToWater := true
 			}
@@ -873,76 +883,15 @@ qplant(flower){
 	guiText("txt", "Started Macro-Gardening\r\n------------------ \r\n")
 	GuiControl, TTRTools:, txt, Started Macro-Gardening
 	sleep, 150
-	result := plant(flower)
-	if(result == 6 || result == 0)
-	{
-		safeClick(45,170)
-		sleep, 125
-		safeClick(369,414)
-		sleep, 30
-		safeClick(369,424)
-		sleep, 30
-		safeClick(369,435)
-		sleep, 30
-		safeClick(369,445)
-		sleep,100
-		qpmessage := false
-		while (checkForSidebar(0) != 1 && gardening)
-		{
-			if(!qpmessage)
-				GuiText("txt", "Waiting for shovel animation to complete.")
-			qpmessage := true
-		}
-		GuiText("txt", "Finished waiting for shovel animation to complete. " . result)
-		result := plant(flower)
-	}else
-	if(result== 4){
-	safeClick(405,435)
-	sleep, 50
-	safeClick(405,435)
-	result := plant(flower)
-	if(result == 6 || result == 0)
-	{
-		safeClick(45,170)
-		sleep, 125
-		safeClick(369,414)
-		sleep, 30
-		safeClick(369,424)
-		sleep, 30
-		safeClick(369,435)
-		sleep, 30
-		safeClick(369,445)
-		sleep,100
-		qpmessage := false
-		while (checkForSidebar(0) != 1 && gardening)
-		{
-			if(!qpmessage)
-			{
-				search := checkForSidebar(0)
-				GuiText("txt", "Waiting for shovel animation to complete. " . search)
-				
-			}qpmessage := true
-		}
-		GuiText("txt", "Finished waiting for shovel animation to complete")
-	}else if(result== 4){
-	safeClick(405,435)
-	sleep, 50
-	safeClick(405,435)
-	result := plant(flower)
-	guiText("txt", "Retrying planting for last time")
-	}else{
-		if(result != 1)
-			guiText("txt", "Plant function unexpectedly returned: " . result)
-	}
-	}else{
-		if(result != 1)
-			guiText("txt", "Plant function unexpectedly returned: " . result)
-	}
-gardening := true
-guiText("txt", "\r\n------------------ \r\nStopped Macro-Gardening" ,, false)
-GuiControl, TTRTools:, txt, Stopped Macro-Gardening
-gardening := false
-gosub setStatus
+	global singlePlantNumber := flower
+	global shouldMacroPlant := true
+	gosub, runGarden
+	global shouldMacroPlant := false
+	gardening := true
+	guiText("txt", "\r\n------------------ \r\nStopped Macro-Gardening" ,, false)
+	GuiControl, TTRTools:, txt, Stopped Macro-Gardening
+	gardening := false
+	gosub setStatus
 }
 NUMPAD1:: qplant(1)
 NUMPAD2:: qplant(2)

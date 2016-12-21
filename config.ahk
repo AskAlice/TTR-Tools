@@ -1,5 +1,5 @@
 #include json.ahk
-version = v1.1.1
+version = v1.1.2
 IfNotExist %A_AppData%\TTR-Tools\config.ini
 	FileInstall, default-conf.ini, %A_AppData%\TTR-Tools\config.ini
 versionInt := formatVersion(version)
