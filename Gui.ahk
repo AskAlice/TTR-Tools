@@ -135,6 +135,7 @@ if(enableFeatureAFK || enableFeatureTrampoline || enableFeatureGarden)
 				{
 					Gui, TTRTools:Add, Edit, h16 x+3 w35 vtimeAFK gSave number, %iniAFKMins%
 					Gui, TTRTools:Add, UpDown, vtimeAFKUD Range1-11, %iniAFKMins%
+					sendJS("updateValue('#interval','" . %iniAFKMins% . "');")
 				}
 			}
 		if(enableFeatureGarden)
@@ -159,6 +160,7 @@ if(enableFeatureAFK || enableFeatureTrampoline || enableFeatureGarden)
 			{
 				Gui, TTRTools:Add, Edit, h16 x+0 w30 vtimesToWater gSave number, %iniTimesToWater%
 				Gui, TTRTools:Add, UpDown, vtimesToWaterUD Range0-5, %iniTimesToWater%
+				sendJS("updateValue('#water','" . %iniTimesToWater% . "');")
 			}
 		}
 }
@@ -179,7 +181,9 @@ if(enableFeatureAFK || enableFeatureTrampoline)
 	vGraph := XGraph( vGraphv, 0x688443, 5, "0,0,0,0", 0x649e90,1 )
 }
 	Gui, TTRTools:Show,, TTR Tools
-	
+	if(!enableFeatureTrampoline){
+	sendJS("disableFeature('ttab')")
+	}
 ;if AFK label is created in current file (ie: if included in TTR-Tools)
 AfkLabel = Afk
 if(enableFeatureAFK)
@@ -279,6 +283,10 @@ IniWrite, %repeat%, %ini%,Trampoline, repeat
 IniWrite, %timeAFK%, %ini%, AFK, afkMins
 IniWrite, %timesToWater%, %ini%, Garden, timesToWater
 IniWrite, %replant%, %ini%, Garden, replant
+/* doesn't seem to work */
+/*sendJS("updateValue('#water','" . %iniTimesToWater% . "');")
+sendJS("updateValue('interval','" . %timeAFK% . "');") 
+*/
 ; end config.ahk update
 
 if(enableFeatureAFK)
@@ -335,9 +343,7 @@ helpGuiEscape:
 helpGuiClose:
     Gui , help:Destroy
 	return
-/*
+
 TTRToolsGuiClose:		;close Gui to Exit
-TTRToolsGuiEscape:		;press Esc to Exit
 	ExitApp
 	return
-	*/

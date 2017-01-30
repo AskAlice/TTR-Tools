@@ -86,7 +86,7 @@ if((trampolineRunning || gardening) && toggle)
 gosub, toggleAFK
 return
 }
-	WinGet active_id, ID, Toontown Rewritten [BETA]
+	WinGet active_id, ID, %windowName%
 	if(toggle)
 	{
 			FormatTime, TimeString,, h:mm:ss

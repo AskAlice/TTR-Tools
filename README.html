@@ -1,5 +1,5 @@
 <h1 id="toontown-rewritten-tools">Toontown Rewritten Tools</h1>
-TTR-Tools is a Toontown Rewritten AutoHotKey helper. Currently has Anti-AFK and Toonfest Trampoline bot that maxes every time and can repeat hands-free (~3200 tokens/hr) <a href="https://github.com/thezoid/TTR-Tools/releases">Download the latest release.</a>
+TTR-Tools is a Toontown Rewritten AutoHotKey helper. Currently has Anti-AFK, Garden Bot, Teleport macros (no hack), and Toonfest/party Trampoline bot that maxes every time and can repeat hands-free (~3200 tokens/hr) <a href="https://github.com/thezoid/TTR-Tools/releases">Download the latest release.</a>
 <p align="center">
 <img src="http://i.imgur.com/HpzGcPy.png" alt="TTRT Icon"/> <br/><img src="http://i.imgur.com/OkXosgP.png" alt="TTR Tools Snapshot"/><br/> Old GUI Eventually to be phased out:<br/> <img src="https://i.imgur.com/YHKErJt.png" alt="Old GUI"/>
 </p>
@@ -13,17 +13,13 @@ TTR-Tools is a Toontown Rewritten AutoHotKey helper. Currently has Anti-AFK and 
 </p>
 <p><a href="https://www.facebook.com/ttrtools/">Official Facebook Page</a></p>
 <h2 id="features">Features</h2>
-<p><strong>There is a new GUI powered by <a href="https://github.com/joedf/Webapp.ahk">joedf's Webapp.ahk</a>. It will make the bot much prettier, but it's still in beta, and there may be crashes when using it. YMMV please report any bugs in the issues section of this repo.</strong></p>
+<p><strong>The GUI is powered by <a href="https://github.com/joedf/Webapp.ahk">joedf's Webapp.ahk</a>. It lets an HTML page to act as the GUI, to make the bot much prettier. There may be some bugs when using it. YMMV please report any bugs in the issues section of this repo.</strong></p>
+<p>There is a config file installed to %appdata%-Tools.ini which will store your settings, but will overwrite itself each update. You can even change the name of the window now with the windowName property. With this it TTR-Tools will unofficially be capable of running on most TTO source games.</p>
 <ul>
-<li><strong>Anti-AFK:</strong> Enable/disable by CTRL+ALT+SHIFT+1. The Anti AFK will run even when TTR isn't focused. So you can continue to use your computer. As the AFK is on, the lower graph will show you how often it is ticking the Anti AFK. Every 6 seconds the graph will update, and when the AFK ticks it will spike up for one plot. The Anti-AFK can not be enabled while the trampoline is on. Use the 'Repeat' option to leave the bot on (more info below).
+<li><strong>Anti-AFK:</strong> Enable/disable by ALT+SHIFT+1. The Anti AFK will run even when TTR isn't focused. So you can continue to use your computer. As the AFK is on, the lower graph will show you how often it is ticking the Anti AFK. Every 6 seconds the graph will update, and when the AFK ticks it will spike up for one plot. The Anti-AFK can not be enabled while the trampoline is on. Use the 'Repeat' option to leave the bot on (more info below).
 <ul>
 <li><p><strong>Settings:</strong></p></li>
 <li><p><em>AFK Time (mins)</em>: You can also set the minutes between each Anti-AFK tick. (ie: 2 mins never sleeping) The toon will log out after 12 minutes (2 mins to sleep, 10 mins to log out once sleeping) so the max AFK tick time is 11 minutes.</p></li>
-</ul></li>
-<li><strong>Trampoline Bot:</strong> Enable by CTRL+ALT+SHIFT+2, Disable by CTRL+ALT+SHIFT+3. This is really the main feature of the program so far. I had a prototype working in a few hours, but kept developing the bot to be shiny because it's fun. It will graph the duration of each jump, to see how smoothly the bot is running. Make sure you keep TTR focused (don't tab out) while this bot is running or it won't find the pixels needed (limitation of AutoHotKey).
-<ul>
-<li><p><strong>Settings:</strong></p></li>
-<li><p><em>Repeat Trampoline</em>: This will let you leave the bot open and walk away as the bot racks up roughly 3200 tokens per hour. It will click away the window that pops up at the end of the trampoline game, walk backwards into the trampoline, then attempt to click the play button (given ping allows, if not then no big deal just wait for it to count down).</p></li>
 </ul></li>
 <li><strong>Gardening Bot:</strong> This feature is a work in progress (initial features released in v1.0.4, first full auto prototype in 1.1.0) There are multiple features in this gardening helper suite. Firstly, there is auto-garden which will garden all of your plants, replanting if specified and watering a specified amount of time. Alternately, there is the macro-garden which will garden a specific flower on numpad press (1-5). All modes will use the max amount of beans you can plant with except the final mode, the watering can trainer, which uses one jellybean to water, replant, then repeat. Please help me out by reporting any bugs you see into the issue section on this github repository.
 <ul>
@@ -32,7 +28,7 @@ TTR-Tools is a Toontown Rewritten AutoHotKey helper. Currently has Anti-AFK and 
 <li><em>Auto-Garden</em>:
 <ul>
 <li>Controls: CTRL+ALT+4 to start, CTRL+ALT+5 to stop. PAUSE/Break to pause/unpause</li>
-<li>Description: Only start this at the spawn point for the estate (teleport to estate, don't move, and press the hotkey)</li>
+<li>Description: Only start this at the spawn point for the estate (teleport to estate, don't move, and press the hotkey). It should work most times, if it fails beyond repair, stop it and use macro gardening to finish.</li>
 </ul></li>
 <li><em>Macro-Garden</em>:
 <ul>
@@ -45,9 +41,21 @@ TTR-Tools is a Toontown Rewritten AutoHotKey helper. Currently has Anti-AFK and 
 <li>Description: This mode will train your watering can by repeatedly and indefinitely planting a one-jellybean dummy plant and then water the plant the number of times set in the &quot;Times to Water (0-5)&quot; setting. This will drain your jellybeans if you leave it running too long.</li>
 </ul></li>
 </ul></li>
-<li><p><strong>Settings:</strong></p></li>
+<li><p><strong>Settings:</strong></p>
+<ul>
 <li><em>Pick+Replant</em>: This option, when enabled, will authenticate the bot to pick plants. There is no reliable way to tell if the plants are grown or not, so just tick this option when the flowers are grown. Otherwise, you can uncheck it and it will just water plants that are already in a pot.</li>
-<li><p><em>Times to Water</em>: Based on your water bucket skill, this is useful to either save time or get the most skill out of watering.</p></li>
+</ul></li>
+<li><em>Times to Water</em>: Based on your water bucket skill, this is useful to either save time or get the most skill out of watering.</li>
+</ul></li>
+<li><strong>Fast Teleport:</strong> A simple little input will appear when you press F5. As long as you have teleport access and can open your schticker book (it doesn't matter if it's already open, either), you won't have to take your hands off the keyboard to teleport anywhere you are able to. Hit F5, the program should be able to identify which area you are trying to go to. For example, &quot;ddl, dream, dreamland, and Donald's Dreamland&quot; would all teleport you to to Donald's Dreamland. Please make an issue on github if you find any flaws or issues with this small addition.
+<ul>
+<li><p><strong>Settings:</strong></p></li>
+<li><p>Currently no settings you can change, but feel free to change anything in Teleport.ahk, then compile TTRTools.ahk</p></li>
+</ul></li>
+<li><strong>Trampoline Bot:</strong> Currently disabled due to no trampolines being in TTR. You can enable it in %appdata%-Tools.ini. Once enabled You can run it with ALT+SHIFT+2, and stop by ALT+SHIFT+3. This is really the main feature of the program so far. I had a prototype working in a few hours, but kept developing the bot to be shiny because it's fun. It will graph the duration of each jump, to see how smoothly the bot is running. Make sure you keep TTR focused (don't tab out) while this bot is running or it won't find the pixels needed (limitation of AutoHotKey).
+<ul>
+<li><p><strong>Settings:</strong></p></li>
+<li><p><em>Repeat Trampoline</em>: This will let you leave the bot open and walk away as the bot racks up roughly 3200 tokens per hour. It will click away the window that pops up at the end of the trampoline game, walk backwards into the trampoline, then attempt to click the play button (given ping allows, if not then no big deal just wait for it to count down).</p></li>
 </ul></li>
 </ul>
 <h2 id="upcoming-features">Upcoming features</h2>
@@ -60,8 +68,7 @@ TTR-Tools is a Toontown Rewritten AutoHotKey helper. Currently has Anti-AFK and 
 <ul>
 <li><p><strong>Known</strong></p>
 <ul>
-<li><p>(major) - In 1.0.4 the default config was not properly set, so it will ask to update every time unless you change the version in the config.ini from 1.0.3 to 1.0.4.</p></li>
-<li><p>(minor) - in 1.1.0, the beta web gui sometimes throws a ton of javascript errors. Although the webapp behaves as intended, I'm unsure as to why this is happening, as it's hard to debug without a javascript console, especially since this error being picked up in the js error log console at the bottom of the page is giving some very vague information. I may have fixed this in 1.1.1, but I'm not absolutely positive yet.</p></li>
+<li>(minor) - Sometimes the garden skill level detection gets the max beans you can plant wrong, and you end up losing skill. Only have witnessed this 4 times.</li>
 </ul></li>
 </ul>
 <p>If you are having issues getting this working well or would like to report any issues please refer to the <a href="https://github.com/thezoid/TTR-Tools/issues">issue tracker on github.</a></p>

@@ -9,8 +9,8 @@ j:=JSON.load(data)
 
 try {
 	__Webapp_Name := __Webapp_DefaultVar(j.name,"My App")
-	__Webapp_Width := __Webapp_DefaultVar(j.width,640)
-	__Webapp_height := __Webapp_DefaultVar(j.height,480)
+	__Webapp_Width := __Webapp_DefaultVar(j.width,750)
+	__Webapp_height := __Webapp_DefaultVar(j.height,600)
 	__Webapp_protocol := __Webapp_DefaultVar(j.protocol,"app")
 	__Webapp_protocol_call := __Webapp_DefaultVar(j.protocol_call,"app_call")
 		if !IsFunc(__Webapp_protocol_call)
