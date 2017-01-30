@@ -18,23 +18,23 @@ $( document ).ready(function() {
       if($(this).parents('#gtab').length)
       {
         if($("#garden-switch").prop("checked"))
-          Materialize.toast('Disable with CTRL+SHIFT+5', 4000);
+          Materialize.toast('Disable with ALTL+SHIFT+5', 4000);
         else
-          Materialize.toast('Enable with CTRL+SHIFT+4', 4000);
+          Materialize.toast('Enable with ALT+SHIFT+4', 4000);
       }
       if($(this).parents('#atab').length)
       {
         if($("#afk-switch").prop("checked"))
-          Materialize.toast('Disable with CTRL+SHIFT+1', 4000);
+          Materialize.toast('Disable with ALT+SHIFT+1', 4000);
         else
-          Materialize.toast('Enable with CTRL+SHIFT+1', 4000);
+          Materialize.toast('Enable with ALT+SHIFT+1', 4000);
       }
       if($(this).parents('#ttab').length)
       {
         if($("#trampoline-switch").prop("checked"))
-          Materialize.toast('Disable with CTRL+SHIFT+3', 4000);
+          Materialize.toast('Disable with ALT+SHIFT+3', 4000);
         else
-          Materialize.toast('Enable with CTRL+SHIFT+2', 4000);
+          Materialize.toast('Enable with ALT+SHIFT+2', 4000);
       }
     });
     var transitionEnd = transitionEndEventName();
@@ -126,6 +126,12 @@ showTooltips: false,
 });
 
 var previous = "";
+function updateValue(id,val){
+  $(id).val(val);
+}
+function disableFeature(feature){
+  $('#'+feature).hide();
+}
 function plotAFK(data,txt){
   // Add two random numbers for each dataset
   myLiveAFKChart.addData([data,data], ++afklatestLabel);
@@ -181,21 +187,21 @@ function updateStatus(control,status){
       $('.tabs').attr("data-transitioning", true);
       console.log("TRANS" + $('.tabs').attr("data-transitioning"));
       $('#ttab input').prop("checked", true);
-      $("#ttab div").attr("data-tooltip", "Disable with CTRL+SHIFT+3");
+      $("#ttab div").attr("data-tooltip", "Disable with ALT+SHIFT+3");
       $('.switch').tooltip({delay: 50});
 	  $('#ttab a').click();
     }else if(control == "a"){
       $('.tabs').attr("data-transitioning", true);
       console.log("TRANS" + $('.tabs').attr("data-transitioning"));
       $('#atab input').prop("checked", true);
-      $("#atab div").attr("data-tooltip", "Disable with CTRL+SHIFT+1");
+      $("#atab div").attr("data-tooltip", "Disable with ALT+SHIFT+1");
       $('.switch').tooltip({delay: 50});
 	  $('#atab a').click();
     }else if(control == "g"){
       $('.tabs').attr("data-transitioning", true);
       console.log("TRANS" + $('.tabs').attr("data-transitioning"));
       $('#gtab input').prop("checked", true);
-      $("#gtab div").attr("data-tooltip", "Disable with CTRL+SHIFT+5");
+      $("#gtab div").attr("data-tooltip", "Disable with ALT+SHIFT+5");
       $('.switch').tooltip({delay: 50});
 	  $('#gtab a').click();
     }else{
@@ -207,8 +213,8 @@ function clearStatus(){
   $('.tabs').attr("data-transitioning", false);
   console.log("TRANS" + $('.tabs').attr("data-transitioning"));
   $('.tabs input').removeAttr('checked');
-  $("#ttab div").attr("data-tooltip", "Enable with CTRL+SHIFT+2, Disable with CTRL+SHIFT+3");
-  $("#atab div").attr("data-tooltip", "Enable with CTRL+SHIFT+1, Disable with CTRL+SHIFT+1");
-  $("#gtab div").attr("data-tooltip", "Enable with CTRL+SHIFT+4, Disable with CTRL+SHIFT+5");
+  $("#ttab div").attr("data-tooltip", "Enable with ALT+SHIFT+2, Disable with ALT+SHIFT+3");
+  $("#atab div").attr("data-tooltip", "Enable with ALT+SHIFT+1, Disable with ALT+SHIFT+1");
+  $("#gtab div").attr("data-tooltip", "Enable with ALT+SHIFT+4, Disable with ALT+SHIFT+5");
   $('.switch').tooltip({delay: 50});
 }

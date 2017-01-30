@@ -1,5 +1,5 @@
 #include json.ahk
-version = v1.1.2
+version = v1.1.3
 IfNotExist %A_AppData%\TTR-Tools\config.ini
 	FileInstall, default-conf.ini, %A_AppData%\TTR-Tools\config.ini
 versionInt := formatVersion(version)
@@ -7,7 +7,14 @@ ini = %A_AppData%\TTR-Tools\config.ini
 FileInstall, default-conf.ini, %A_AppData%\TTR-Tools\config.ini,0
 IniRead, iniVer, %ini%,TTR-Tools, version
 iniVersionInt := formatVersion(iniVer)
+IniRead, windowName, %ini%,TTR-Tools, windowName
+global windowName := windowName
 IniRead, iniUpdate, %ini%,TTR-Tools, CheckUpdate
+IniRead, iniTrampolineEnabled, %ini%,Trampoline, enabled
+if(iniTrampolineEnabled=="0" || iniTrampolineEnabled=="false" )
+	enableFeatureTrampoline:= false
+if(iniTrampolineEnabled=="1" || iniTrampolineEnabled=="true" )
+	enableFeatureTrampoline:= true
 IniRead, iniRep, %ini%,Trampoline, repeat
 IniRead, iniAFKMins, %ini%, AFK, afkMins
 IniRead, iniTimesToWater, %ini%, Garden, timesToWater

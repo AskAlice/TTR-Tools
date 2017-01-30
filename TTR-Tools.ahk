@@ -31,11 +31,11 @@ Process, priority, , High
 
 ;Enable features for GUI to recognize
 enableFeatureAFK := true
-enableFeatureTrampoline := true
 enableFeatureGarden:=true
 #Include Afk.ahk
 #include TrampolineBot.ahk
 #Include Garden.ahk
+#Include Teleport.ahk
 #include Gui.ahk
 F9::
 

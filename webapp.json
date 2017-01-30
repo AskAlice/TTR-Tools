@@ -1,6 +1,6 @@
 {
   "name":				"TTR Tools",
-  "width":				750,
+  "width":				800,
   "height":				500,
   "protocol":			"app",
   "protocol_call":		"app_call",

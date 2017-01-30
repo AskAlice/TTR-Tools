@@ -129,14 +129,15 @@ Numpad9::
 checkWindow(byref active_id){
 width := 816
 height := 639
-WinGet id, ID, Toontown Rewritten [BETA]
+outputDebug, windowName %windowName%
+WinGet id, ID, %windowName%
 active_id := id
-IfWinExist, Toontown Rewritten [BETA]
+IfWinExist %windowName%
 	{
 		WinActivate ; use the window found above
 		WinGetPos,winX,winY,curWidth,curHeight
 		if(curWidth != width || curHeight != height)
-			WinMove, Toontown Rewritten [BETA], , ,  , width, height
+			WinMove, %windowName%, , ,  , width, height
 		return true
 	}
 	else{

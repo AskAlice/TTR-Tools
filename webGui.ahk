@@ -105,9 +105,13 @@ updateSetting(setting,value){
 	OutputDebug ran s,%setting%v,%value%
 	if(setting == "water"){
 	;Times to water, adjust as your bucket upgrades.
+	;AFK Interval (minutes)
 		if(value is digit)
 		{
-			MsgBox Value is %value%
+			global timesToWater
+			global timesToWaterUD
+			GuiControl,TTRTools:,timesToWater,%value%
+			GuiControl,TTRTools:,timesToWaterUD,%value%
 		}
 		else
 			sendJS("alert('Not a number! Error!')")

@@ -16,6 +16,8 @@ startTrampoline(){
 gosub, runTrampoline
 }
 runTrampoline:
+if(enableFeatureTrampoline == false)
+return
 width := 816
 height := 639
 gardeningLabel = exitGardening
@@ -45,14 +47,14 @@ goSub, Save
 
 ;Make sure the graph is shown
 XGraph_Plot(pGraph)
-WinGet active_id, ID, Toontown Rewritten [BETA]
+WinGet active_id, ID, %windowName%
 SendMode Input
-IfWinExist, Toontown Rewritten [BETA]
+IfWinExist, %windowName%
 	{
 		WinActivate ; use the window found above
 		WinGetPos,winX,winY,curWidth,curHeight
 		if(curWidth != width || curHeight != height)
-			WinMove, Toontown Rewritten [BETA], , ,  , width, height
+			WinMove, %windowName%, , ,  , width, height
 	}
 else
     {
@@ -157,11 +159,11 @@ loop
 	{
 		if(count > 340)
 		{
-			IfWinExist, Toontown Rewritten [BETA]
+			IfWinExist, %windowName%
 			{
 				WinGetPos,winX,winY,curWidth,curHeight
 				if(curWidth != width || curHeight != height)
-					WinMove, Toontown Rewritten [BETA], , ,  , width, height
+					WinMove, %windowName%, , ,  , width, height
 			}
 			else
 			{
@@ -197,7 +199,7 @@ loop
 						Sleep 800
 						ControlSend,, {Down UP},ahk_id %active_id%
 						Sleep 1400
-						IfWinExist, Toontown Rewritten [BETA]
+						IfWinExist, %windowName%
 						WinActivate
 						PixelGetColor,playbtn,726,593 RGB
 						bDist := RGB_Euclidian_Distance(playbtn,0x00b714)
