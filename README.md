@@ -1,3 +1,5 @@
+This is no longer maintained. Feel free to fork and update. It's fairly out of date.
+
 Toontown Rewritten Tools
 =======
 
