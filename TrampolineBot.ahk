@@ -19,7 +19,7 @@ runTrampoline:
 if(enableFeatureTrampoline == false)
 return
 width := 816
-height := 639
+height := 633
 gardeningLabel = exitGardening
 global gardening
 sendJS("updateConsole('Trampoline will graph when running, and events will be logged here.\r\n\r\n------------------\r\n', '#trampoline-console')")
