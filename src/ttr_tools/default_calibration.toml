@@ -1,0 +1,55 @@
+# Default calibration profile — original AHK values from 2017.
+# These assume an 816x639 window on a non-Retina display.
+# Run `uv run ttr-tools --calibrate` to capture fresh values from your game.
+
+[meta]
+created = "2017-01-01T00:00:00"
+window_width = 816
+window_height = 639
+scale_factor = 1.0
+
+[garden.coords]
+sidebar_header = [70, 145]
+shovel_icon = [50, 159]
+shovel_click = [45, 170]
+water_bucket = [40, 214]
+bean_picker_check = [400, 250]
+bean_origin = [285, 300]
+bean_spacing = 30
+box_origin = [300, 375]
+box_spacing = 30
+plant_button = [495, 435]
+reset_button = [405, 435]
+ok_button = [405, 405]
+remove_confirm_x = 369
+remove_confirm_y_positions = [414, 424, 435, 445]
+
+[garden.colors]
+sidebar_color = [255, 255, 143]
+bucket_color = [86, 201, 208]
+shovel_color = [73, 82, 81]
+bean_picker_open_color = [255, 255, 191]
+box_inactive_color = [127, 127, 127]
+box_first_color = [255, 255, 255]
+ok_dialog_color = [255, 255, 191]
+
+[teleport.coords]
+book_button = [780, 595]
+map_tab = [685, 180]
+book_open_check = [40, 315]
+acorn_acres = [465, 420]
+bossbot_hq = [610, 415]
+cashbot_hq = [212, 131]
+donalds_dock = [585, 300]
+dreamland = [383, 152]
+daisy_gardens = [325, 395]
+estate = [450, 495]
+goofy_speedway = [256, 280]
+lawbot_hq = [620, 128]
+melodyland = [445, 240]
+playground = [575, 485]
+sellbot_hq = [210, 420]
+ttc = [415, 305]
+
+[teleport.colors]
+book_open_color = [13, 38, 102]

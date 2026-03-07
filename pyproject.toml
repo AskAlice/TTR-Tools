@@ -1,0 +1,35 @@
+[project]
+name = "ttr-tools"
+version = "2.0.0"
+description = "Toontown Rewritten automation tools for macOS (Gardening Bot & Fast Teleport)"
+requires-python = ">=3.12"
+dependencies = [
+    "mss",
+    "pynput",
+    "pyobjc-core",
+    "pyobjc-framework-Quartz",
+    "Pillow",
+    "customtkinter",
+]
+
+[project.scripts]
+ttr-tools = "ttr_tools.__main__:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+
+[tool.ruff.format]
+quote-style = "double"
+
+[dependency-groups]
+dev = [
+    "ruff>=0.15.5",
+]
