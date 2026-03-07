@@ -1,0 +1,7 @@
+[ttr-tools]
+version = "2.0.0"
+window_name = "Toontown Rewritten"
+
+[garden]
+times_to_water = 2
+replant = true
